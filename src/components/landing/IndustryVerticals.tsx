@@ -1,128 +1,160 @@
 import { motion } from "framer-motion";
 import {
   Shirt, ShoppingCart, Coffee, Warehouse,
-  Monitor, Hotel, Landmark, Pill, ArrowUpRight
+  Monitor, Hotel, ArrowUpRight
 } from "lucide-react";
 import SectionBadge from "./SectionBadge";
+import { Link } from "react-router-dom";
 
 const verticals = [
   { 
-    icon: ShoppingCart, 
-    name: "Supermarkets & Grocery", 
-    desc: "Automated checkout monitoring, shelf stock tracking, & shrink reduction.", 
-    className: "md:col-span-2 md:row-span-1 bg-gradient-to-r from-[#010101] to-[#0A1A0F]",
-    iconSize: "size-6",
-  },
-  { 
     icon: Shirt, 
     name: "Fashion & Apparel", 
-    desc: "Footprint tracing & fitting room queue analytics.", 
+    desc: "Fitting room occupancy tracking, visual merchandising, & shrinkage detection.", 
+    className: "md:col-span-2 bg-[#050505]",
+    code: "SEC_FA_01",
+    slug: "fashion"
+  },
+  { 
+    icon: ShoppingCart, 
+    name: "Supermarkets", 
+    desc: "Automated checkout monitoring, shelf stock tracking, & shrink reduction.", 
     className: "col-span-1",
-    iconSize: "size-5",
+    code: "SEC_GZ_02",
+    slug: "supermarkets"
   },
   { 
     icon: Warehouse, 
-    name: "Warehouses & Logistics", 
+    name: "Warehousing", 
     desc: "Perimeter security & PPE safety compliance tracking.", 
     className: "col-span-1",
-    iconSize: "size-5",
+    code: "SEC_WH_03",
+    slug: "warehousing"
   },
   { 
-    icon: Landmark, 
-    name: "Banks & ATMs", 
-    desc: "Loitering detection & secure vault monitoring.", 
+    icon: Monitor, 
+    name: "Electronics", 
+    desc: "High-value asset tracking & behavior alerts.", 
     className: "col-span-1",
-    iconSize: "size-5",
+    code: "SEC_ELC_04",
+    slug: "electronics"
   },
   { 
     icon: Coffee, 
     name: "Cafes & QSR", 
     desc: "Queue lengths & order turnaround speed metrics.", 
     className: "col-span-1",
-    iconSize: "size-5",
-  },
-  { 
-    icon: Pill, 
-    name: "Pharmaceutical Stores", 
-    desc: "Restricted zone access control & drug tracking.", 
-    className: "col-span-1",
-    iconSize: "size-5",
+    code: "SEC_QSR_05",
+    slug: "qsr"
   },
   { 
     icon: Hotel, 
-    name: "Hotels & Hospitality", 
+    name: "Hospitality", 
     desc: "VIP arrival alerts & unauthorized entry prevention.", 
-    className: "md:col-span-2",
-    iconSize: "size-6",
-  },
-  { 
-    icon: Monitor, 
-    name: "Electronics Retail", 
-    desc: "High-value asset tracking & behavior alerts.", 
-    className: "col-span-1",
-    iconSize: "size-5",
+    className: "md:col-span-2 bg-[#080808]",
+    code: "SEC_HOS_06",
+    slug: "hospitality"
   },
 ];
 
 const IndustryVerticals = () => (
-  <section className="py-16 md:py-24 bg-transparent relative overflow-hidden">
-    
-    {/* Background Glows for the section */}
-    <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-    <div className="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+  <section className="py-24 md:py-32 bg-[#000000] relative overflow-hidden border-b border-white/10">
+    {/* Heavy Grid Pattern */}
+    <div className="absolute inset-0 z-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:100%_40px]" />
 
-    <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <div className="mx-auto max-w-[1400px] px-4 md:px-8 relative z-10">
       
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-10 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6"
-      >
-        <div className="max-w-2xl">
-          <SectionBadge text="USE CASES" />
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl lg:text-5xl mt-4 tracking-tight">
-            Built for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">Your Industry.</span>
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-24 gap-6">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl"
+        >
+          <SectionBadge text="SECTOR DEPLOYMENT" />
+          <h2 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+            Tactical <br />
+            <span className="text-gray-500">Verticals.</span>
           </h2>
-          <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed">
-            VisionIQ adapts to your environment. From retail corridors to secure banking zones, our AI modules provide tailored surveillance that fits your specific operational hazards.
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="md:max-w-xs border-l border-white/20 pl-4"
+        >
+          <p className="text-gray-400 text-sm md:text-base font-mono leading-relaxed uppercase tracking-widest">
+            VisionIQ adapts to high-density environments. Our AI modules provides mission-critical telemetry across diverse industries.
           </p>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
       {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 auto-rows-[minmax(140px,auto)]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-1 divide-white/10 border border-white/10 p-1">
         {verticals.map((v, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05, duration: 0.4 }}
-            viewport={{ once: true }}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-5 md:p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 ${v.className || ""}`}
+          <Link 
+            key={v.name} 
+            to={`/solutions/${v.slug}`}
+            className={`group block relative ${v.className || ""}`}
           >
-            {/* Card Hover Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10" />
-            
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-3 rounded-xl bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all duration-300">
-                <v.icon className={`text-white/80 group-hover:text-primary transition-colors ${v.iconSize}`} />
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+              viewport={{ once: true }}
+              className={`relative flex flex-col justify-between border border-white/5 bg-[#050505] p-6 min-h-[220px] h-full transition-all duration-300 hover:bg-[#0a0a0a] hover:border-white/30`}
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpRight className="h-4 w-4 text-white" />
               </div>
-              <ArrowUpRight className="size-4 text-white/20 group-hover:text-primary/70 transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
-            </div>
 
-            <div className="mt-auto">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-1.5 tracking-tight group-hover:text-primary-50 transition-colors">
-                {v.name}
-              </h3>
-              <p className="text-xs md:text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed line-clamp-2">
-                {v.desc}
-              </p>
-            </div>
-          </motion.div>
+              {/* Corner Markers */}
+              <div className="absolute top-0 right-0 w-2 h-2 border-r border-t border-white/0 group-hover:border-white/40 transition-all" />
+              
+              <div className="flex justify-between items-start mb-10">
+                <div className="p-3 bg-white/5 border border-white/10 group-hover:bg-white group-hover:text-black transition-all">
+                  <v.icon className="h-6 w-6" />
+                </div>
+                <div className="text-[10px] font-mono font-bold text-gray-700 tracking-[0.3em] uppercase">
+                  {v.code}
+                </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="mt-auto">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-xl font-black text-white uppercase tracking-widest font-[Chakra Petch]">
+                    {v.name}
+                  </h3>
+                </div>
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-widest transition-colors leading-relaxed group-hover:text-gray-300">
+                  {v.desc}
+                </p>
+              </div>
+            </motion.div>
+          </Link>
         ))}
       </div>
+      
+      {/* Footer Line */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1 }}
+        className="mt-16 flex items-center justify-between border-t border-white/10 pt-8"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 bg-white animate-pulse rounded-full" />
+          <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/20">Sector Analysis: Complete</span>
+        </div>
+        <div className="text-[10px] font-mono tracking-[0.3em] uppercase text-white/20">
+          SCAN_ID: 0x88F2
+        </div>
+      </motion.div>
     </div>
   </section>
 );

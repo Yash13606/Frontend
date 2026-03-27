@@ -58,11 +58,13 @@ export interface SolutionPageData {
   deliverables: string[];
   faqs: { q: string; a: string }[];
   bottomCTA: { title: string; sub: string; btn1: string; btn2: string };
+  sectorCode: string;
 }
 
 export const solutionPages: Record<string, SolutionPageData> = {
   fashion: {
     badge: "FASHION & APPAREL",
+    sectorCode: "SEC_FA_01",
     heroTitle: "Complete AI Intelligence for Fashion Retail",
     heroSub: "Track which designs attract attention, eliminate fitting room theft, and monitor staff performance across every floor.",
     ctaBtn: "Request Fashion Retail Demo →",
@@ -164,6 +166,7 @@ export const solutionPages: Record<string, SolutionPageData> = {
 
   supermarkets: {
     badge: "SUPERMARKETS & GROCERY",
+    sectorCode: "SEC_GZ_02",
     heroTitle: "AI-Powered Intelligence for Supermarket Operations",
     heroSub: "From self-checkout fraud to aisle optimization — complete visibility across every square foot of your store.",
     ctaBtn: "Request Supermarket Demo →",
@@ -265,6 +268,7 @@ export const solutionPages: Record<string, SolutionPageData> = {
 
   qsr: {
     badge: "CAFES & QSR",
+    sectorCode: "SEC_QSR_05",
     heroTitle: "AI Operations Intelligence for Cafes & QSR",
     heroSub: "Monitor service speed, hygiene compliance, and staff efficiency — all from your existing camera infrastructure.",
     ctaBtn: "Request QSR Demo →",
@@ -366,6 +370,7 @@ export const solutionPages: Record<string, SolutionPageData> = {
 
   warehousing: {
     badge: "WAREHOUSES & LOGISTICS",
+    sectorCode: "SEC_WH_03",
     heroTitle: "AI Security & Safety for Warehouse Operations",
     heroSub: "24/7 perimeter security, fire prevention, and operational monitoring for warehouses and distribution centers.",
     ctaBtn: "Request Warehouse Demo →",
@@ -467,6 +472,7 @@ export const solutionPages: Record<string, SolutionPageData> = {
 
   electronics: {
     badge: "ELECTRONICS RETAIL",
+    sectorCode: "SEC_ELC_04",
     heroTitle: "AI Loss Prevention for Electronics Stores",
     heroSub: "Protect high-value inventory with concealment detection, customer analytics, and POS fraud prevention.",
     ctaBtn: "Request Electronics Demo →",
@@ -568,6 +574,7 @@ export const solutionPages: Record<string, SolutionPageData> = {
 
   hospitality: {
     badge: "HOTELS & HOSPITALITY",
+    sectorCode: "SEC_HOS_06",
     heroTitle: "AI-Powered Guest Experience & Safety for Hotels",
     heroSub: "Optimize guest flow, ensure kitchen fire safety, and monitor staff service levels across your entire property.",
     ctaBtn: "Request Hotel Demo →",

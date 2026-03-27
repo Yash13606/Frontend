@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 const SPACING = 80;
 const DOT_RADIUS = 2;
-const DOT_COLOR = [0, 255, 136]; // RGB for #00FF88
+const DOT_COLOR = [0, 255, 136]; // RGB for #FFFFFF
 const SCAN_LINE_COUNT = 4;
 const PULSE_CYCLE = 4000; // ms
 const SCAN_SPEED = 8000; // ms per full sweep

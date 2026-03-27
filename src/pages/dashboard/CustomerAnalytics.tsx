@@ -6,16 +6,16 @@ import { useDashboardStore } from '@/store/dashboardStore';
 import { footfallData, heatmapZones, demographics } from '@/data/mockData';
 
 const CHART_TOOLTIP = {
-  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(0,255,136,0.30)', borderRadius: 8 },
+  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(255,255,255,0.30)', borderRadius: 8 },
   labelStyle: { color: '#888', fontSize: 12 },
   itemStyle: { color: '#FFF', fontSize: 13 },
 };
 
-const PIE_COLORS = ['#00FF88', 'rgba(0,255,136,0.35)'];
+const PIE_COLORS = ['#FFFFFF', 'rgba(255,255,255,0.35)'];
 
 function intensityToColor(v: number) {
   const p = v / 100;
-  return `rgba(0,255,136,${0.07 + p * 0.80})`;
+  return `rgba(255,255,255,${0.07 + p * 0.80})`;
 }
 
 export default function CustomerAnalytics() {
@@ -26,7 +26,7 @@ export default function CustomerAnalytics() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● CUSTOMER ANALYTICS</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● CUSTOMER ANALYTICS</p>
         <h1 className="text-[28px] font-bold text-white">Customer Analytics{storeSuffix}</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>Footfall, dwell time, and demographic insights</p>
       </motion.div>
@@ -45,16 +45,16 @@ export default function CustomerAnalytics() {
             <AreaChart data={footfallData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="caGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00FF88" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#00FF88" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#FFFFFF" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
               <XAxis dataKey="hour" tick={{ fill: '#444', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#444', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip {...CHART_TOOLTIP} />
-              <Area type="monotone" dataKey="count" stroke="#00FF88" strokeWidth={2} fill="url(#caGrad)"
-                dot={false} activeDot={{ r: 4, fill: '#00FF88', stroke: 'rgba(0,255,136,0.4)', strokeWidth: 6 }}
+              <Area type="monotone" dataKey="count" stroke="#FFFFFF" strokeWidth={2} fill="url(#caGrad)"
+                dot={false} activeDot={{ r: 4, fill: '#FFFFFF', stroke: 'rgba(255,255,255,0.4)', strokeWidth: 6 }}
                 animationBegin={200} animationDuration={800} />
             </AreaChart>
           </ResponsiveContainer>
@@ -74,14 +74,14 @@ export default function CustomerAnalytics() {
                   className="rounded-lg p-2.5 flex flex-col"
                   style={{
                     background: intensityToColor(zone.intensity),
-                    border: '1px solid rgba(0,255,136,0.15)',
+                    border: '1px solid rgba(255,255,255,0.15)',
                     minHeight: 58,
                   }}
                 >
                   <span className="text-[10px] font-medium leading-tight" style={{ color: textDark ? 'rgba(0,0,0,0.7)' : '#555' }}>
                     {zone.zone}
                   </span>
-                  <span className="text-[18px] font-bold mt-auto" style={{ color: textDark ? 'rgba(0,0,0,0.85)' : '#00FF88' }}>
+                  <span className="text-[18px] font-bold mt-auto" style={{ color: textDark ? 'rgba(0,0,0,0.85)' : '#FFFFFF' }}>
                     {zone.intensity}%
                   </span>
                 </motion.div>
@@ -101,8 +101,8 @@ export default function CustomerAnalytics() {
               <YAxis tick={{ fill: '#444', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip {...CHART_TOOLTIP} />
               <Legend wrapperStyle={{ fontSize: 11 }} formatter={v => <span style={{ color: '#888' }}>{v}</span>} />
-              <Bar dataKey="male" name="Male" fill="#00FF88" radius={[3, 3, 0, 0]} animationBegin={200} animationDuration={800} />
-              <Bar dataKey="female" name="Female" fill="rgba(0,255,136,0.40)" radius={[3, 3, 0, 0]} animationBegin={200} animationDuration={800} />
+              <Bar dataKey="male" name="Male" fill="#FFFFFF" radius={[3, 3, 0, 0]} animationBegin={200} animationDuration={800} />
+              <Bar dataKey="female" name="Female" fill="rgba(255,255,255,0.40)" radius={[3, 3, 0, 0]} animationBegin={200} animationDuration={800} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>

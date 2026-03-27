@@ -1,348 +1,268 @@
-import { useState, useEffect, useRef } from 'react';
-import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { motion } from 'framer-motion';
-import { Calendar, Filter, Send, Mic, Activity, Clock, FileText, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AreaChart, Area, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, ArrowDownRight, Clock, Download, AlertTriangle, Activity, Database, Server } from 'lucide-react';
 import { useDashboardStore } from '@/store/dashboardStore';
 import { alerts, footfallData, cameras } from '@/data/mockData';
 
-// Count-up hook
-function useCountUp(target: number, duration = 1600, start = false) {
-  const [count, setCount] = useState(0);
-  const rafRef = useRef<number>();
-  useEffect(() => {
-    if (!start) return;
-    let startTime: number | undefined;
-    const step = (ts: number) => {
-      if (!startTime) startTime = ts;
-      const progress = Math.min((ts - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * target));
-      if (progress < 1) rafRef.current = requestAnimationFrame(step);
-    };
-    rafRef.current = requestAnimationFrame(step);
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [target, duration, start]);
-  return count;
-}
+// --- TACTICAL COMPONENTS ---
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.4, ease: 'easeOut', delay: i * 0.08 },
-  }),
-};
+const TacticalCard = ({ children, className = '', title, icon: Icon, delay = 0 }: any) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+    className={`tactical-panel bracket-box flex flex-col ${className}`}
+  >
+    {(title || Icon) && (
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#2d3440] bg-[#0a0c10]/50">
+        {title && <h3 className="font-display font-semibold tracking-widest text-[11px] text-[#8c9baf] uppercase m-0 leading-none">{title}</h3>}
+        {Icon && <Icon size={14} className="text-[#3b82f6]" />}
+      </div>
+    )}
+    <div className="flex-1 p-5">
+      {children}
+    </div>
+  </motion.div>
+);
+
+const TacticalMetric = ({ label, value, subtext, trend, positive, accentColor = '#3b82f6' }: any) => (
+  <div className="flex flex-col gap-2">
+    <div className="flex justify-between items-start">
+      <span className="font-display text-[10px] font-bold text-[#8c9baf] uppercase tracking-[0.15em]">{label}</span>
+      {trend && (
+        <span className={`flex items-center text-[10px] font-bold tracking-wider ${positive ? 'text-[#10b981]' : 'text-[#ef4444]'}`}>
+          {positive ? <ArrowUpRight size={12} className="mr-1" /> : <ArrowDownRight size={12} className="mr-1" />}
+          {trend}
+        </span>
+      )}
+    </div>
+    <div className="flex items-baseline gap-2">
+      <span className="font-display text-[32px] font-semibold text-[#e2e8f0] leading-none" style={{ textShadow: `0 0 20px ${accentColor}40` }}>{value}</span>
+      {subtext && <span className="text-[12px] text-[#8c9baf] font-medium">{subtext}</span>}
+    </div>
+  </div>
+);
+
+// --- MAIN PAGE ---
 
 export default function Overview() {
   const { selectedStore } = useDashboardStore();
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setStarted(true), 150);
-    return () => clearTimeout(t);
-  }, []);
-
+  
+  // Interactive States
+  const [timeRange, setTimeRange] = useState('24H');
+  const [isExporting, setIsExporting] = useState(false);
+  const [hoveredAlert, setHoveredAlert] = useState<string | null>(null);
+  
   const filteredAlerts = alerts.filter(a => selectedStore === 'all' || a.storeId === selectedStore);
   const filteredCameras = cameras.filter(c => selectedStore === 'all' || c.storeId === selectedStore);
   
-  const footfallCount = useCountUp(3847, 1600, started);
-  const alertCount = useCountUp(filteredAlerts.length, 1200, started);
-  const onlineCount = useCountUp(filteredCameras.filter(c => c.status === 'online').length, 1000, started);
+  const activeAlerts = filteredAlerts.filter(a => a.status === 'active');
+  const criticalCount = activeAlerts.filter(a => a.severity === 'critical').length;
+  const onlineCount = filteredCameras.filter(c => c.status === 'online').length;
 
-  const topOpportunities = filteredAlerts.slice(0, 5).map(a => ({
-    id: a.id,
-    name: a.type,
-    region: a.storeId.toUpperCase(),
-    score: Math.floor(Math.random() * 20) + 80,
-    risk: a.severity === 'critical' ? 5 : a.severity === 'high' ? 4 : 3,
-    increase: '+' + (Math.floor(Math.random() * 50) + 10),
-    value: a.timestamp
-  }));
-
-  const pieData = [
-    { name: 'Customers', value: 344, color: '#6366F1' },
-    { name: 'Staff', value: 256, color: '#EAB308' },
-    { name: 'Unauthorized', value: 128, color: '#00FF88' },
-  ];
-
-  const barData = [
-    { name: 'Mon', active: 60, resolved: 40 },
-    { name: 'Tue', active: 75, resolved: 25 },
-    { name: 'Wed', active: 40, resolved: 60 },
-    { name: 'Thu', active: 90, resolved: 10 },
-    { name: 'Fri', active: 55, resolved: 45 },
-  ];
+  const handleExport = () => {
+    setIsExporting(true);
+    setTimeout(() => setIsExporting(false), 1000); // Faux export interaction
+  };
 
   return (
-    <div className="space-y-5 pb-10">
-      {/* ── Page Header ── */}
-      <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-2">
-        <h1 className="text-[32px] font-semibold text-white tracking-tight">Your Analytical Board</h1>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium transition-all hover:bg-white/10" style={{ background: '#111', color: '#FFF', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <Calendar size={14} /> Select Date
-          </button>
-          <button className="flex items-center justify-center w-[38px] h-[38px] rounded-xl transition-all hover:bg-white/10" style={{ background: '#111', color: '#FFF', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <Filter size={16} />
-          </button>
+    <div className="min-h-[calc(100vh-80px)] p-6 space-y-6 max-w-[1600px] mx-auto">
+      
+      {/* ── HEADER ── */}
+      <div className="flex justify-between items-end pb-4 border-b border-[#2d3440]">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-2 w-2 rounded-sm bg-[#3b82f6] animate-pulse" />
+            <span className="font-display text-[10px] font-bold tracking-[0.2em] text-[#3b82f6] uppercase">System Overview</span>
+          </div>
+          <h1 className="text-[28px] font-display font-semibold tracking-tight text-[#e2e8f0]">
+            COMMAND CENTER
+          </h1>
         </div>
-      </motion.div>
+        <div className="flex gap-2">
+          {['1H', '24H', '7D'].map((range) => (
+            <motion.button 
+              key={range}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setTimeRange(range)}
+              className={`tactical-btn ${timeRange === range ? 'active' : ''}`}
+            >
+              {range}
+            </motion.button>
+          ))}
+          <div className="w-px h-8 bg-[#2d3440] mx-2" />
+          <motion.button 
+            whileTap={{ scale: 0.95 }}
+            onClick={handleExport}
+            className="tactical-btn flex items-center gap-2"
+          >
+            {isExporting ? <Activity size={12} className="animate-spin" /> : <Download size={12} />}
+            {isExporting ? 'EXPORTING...' : 'EXPORT LOG'}
+          </motion.button>
+        </div>
+      </div>
 
-      {/* ── Top Row: Smart distribution + AI ── */}
-      <div className="flex gap-5">
+      {/* ── TOP METRICS ROW ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <TacticalCard delay={0.1}>
+          <TacticalMetric label="Global Footfall" value="12,482" subtext="INDIVIDUALS" trend="12.5%" positive={true} accentColor="#3b82f6" />
+        </TacticalCard>
+        <TacticalCard delay={0.2}>
+           <TacticalMetric label="Active Threats" value={activeAlerts.length.toString()} subtext="UNRESOLVED" trend="2 NEW" positive={false} accentColor="#f97316" />
+        </TacticalCard>
+        <TacticalCard delay={0.3}>
+           <TacticalMetric label="Uplink Status" value={`${onlineCount}/${filteredCameras.length}`} subtext="ONLINE" trend="100%" positive={true} accentColor="#10b981" />
+        </TacticalCard>
+        <TacticalCard delay={0.4}>
+           <TacticalMetric label="Response Delta" value="4.2" subtext="MINUTES" trend="1.2m" positive={true} accentColor="#3b82f6" />
+        </TacticalCard>
+      </div>
+
+      {/* ── MAIN CHARTS ROW ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left: Smart Surveillance Distribution */}
-        <motion.div
-          custom={0} variants={cardVariants} initial="hidden" animate="visible"
-          className="flex-[1.4] rounded-[24px] p-7 flex flex-col justify-between relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(180deg, #111111 0%, #0A140F 100%)',
-            border: '1px solid rgba(0,255,136,0.1)',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-          }}
-        >
-          {/* Intense bottom green glow matching reference */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: 'radial-gradient(ellipse at bottom, rgba(0,255,136,0.25) 0%, transparent 70%)' }} />
+        {/* Left: Telemetry Graph */}
+        <TacticalCard className="col-span-2" title="Network Telemetry" icon={Activity} delay={0.5}>
+          <div className="flex justify-end items-center mb-4 gap-6">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#3b82f6]" />
+              <span className="font-display text-[10px] font-bold tracking-wider text-[#8c9baf] uppercase">Traffic Vol</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#f97316]" />
+              <span className="font-display text-[10px] font-bold tracking-wider text-[#8c9baf] uppercase">Anomalies</span>
+            </div>
+          </div>
           
-          <div className="relative z-10 mb-8">
-            <h2 className="text-[20px] font-semibold text-white mb-1.5">Smart Surveillance Distribution</h2>
-            <p className="text-[13px]" style={{ color: '#888' }}>AI-enhanced security metrics showing growth in detection, compliance, and overall performance.</p>
-          </div>
-
-          <div className="relative z-10 grid grid-cols-3 gap-4">
-            {[
-              { label: 'Total Footfall', val: footfallCount.toLocaleString(), icon: <Activity size={12} /> },
-              { label: 'Active Alerts', val: '+' + alertCount.toString() + '%', icon: <Clock size={12} /> },
-              { label: 'Cameras Online', val: onlineCount.toLocaleString(), icon: <Activity size={12} /> },
-            ].map((stat, i) => (
-              <div
-                key={i}
-                className="rounded-[16px] p-5"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  backdropFilter: 'blur(10px)'
-                }}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex items-center justify-center w-5 h-5 rounded-md" style={{ background: 'rgba(255,255,255,0.1)', color: '#CCC' }}>
-                    {stat.icon}
-                  </div>
-                  <span className="text-[12px] font-medium text-white">{stat.label}</span>
-                </div>
-                <p className="text-[28px] font-semibold text-white tracking-tight">{stat.val}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Right: VisionIQ AI */}
-        <motion.div
-          custom={1} variants={cardVariants} initial="hidden" animate="visible"
-          className="flex-1 rounded-[24px] p-6 flex flex-col relative overflow-hidden"
-          style={{ background: '#111', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
-        >
-          {/* Orb container */}
-          <div className="flex-1 flex flex-col items-center justify-center relative min-h-[220px]">
-            <div className="absolute top-0 left-0 right-0 flex justify-between items-center px-2">
-              <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>-</button>
-              <span className="text-[15px] font-medium text-white">VisionIQ AI</span>
-              <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>+</button>
-            </div>
+          <div className="h-[280px] w-full mt-2 relative">
+            {/* Tactical Grid Overlay behind chart */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
             
-            {/* The beautiful glowing orb */}
-            <div className="relative mt-8 mb-6">
-              <div
-                className="w-36 h-36 rounded-full"
-                style={{
-                  background: 'radial-gradient(circle at 35% 35%, #D4FF59 0%, #00FF88 40%, #008A5E 100%)',
-                  boxShadow: 'inset -8px -8px 24px rgba(0,0,0,0.4), 0 0 40px rgba(0,255,136,0.3)',
-                  animation: 'orb-float 4s ease-in-out infinite'
-                }}
-              />
-              {/* Star sparkles around orb */}
-              <div className="absolute top-0 left-[-20px] w-1 h-1 bg-white rounded-full shadow-[0_0_8px_white]" />
-              <div className="absolute bottom-10 right-[-10px] w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_white]" />
-            </div>
-            
-            <p className="text-[13px] text-[#AAA] font-medium">How can I assist you today?</p>
-          </div>
-
-          {/* Action buttons */}
-          <div className="grid grid-cols-2 gap-3 mb-3 mt-4">
-            <button className="flex flex-col items-center justify-center rounded-[14px] py-4 transition-colors hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <PieChart size={18} className="mb-2 text-[#D4FF59]" />
-              <span className="text-[12px] font-medium text-[#CCC]">Pro Analysis</span>
-            </button>
-            <button className="flex flex-col items-center justify-center rounded-[14px] py-4 transition-colors hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <FileText size={18} className="mb-2 text-[#D4FF59]" />
-              <span className="text-[12px] font-medium text-[#CCC]">Report</span>
-            </button>
-          </div>
-
-          {/* Chat input */}
-          <div className="relative flex items-center bg-[#1A1A1A] rounded-[16px] px-4 py-3" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-            <input type="text" placeholder="Ask anything..." className="bg-transparent border-none outline-none text-[13px] text-white flex-1" />
-            <div className="flex items-center gap-3">
-              <button><Send size={14} className="text-[#D4FF59]" /></button>
-              <button><Mic size={14} className="text-[#666]" /></button>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ── Middle Row: Two Analytical Cards ── */}
-      <div className="flex gap-5">
-        
-        {/* Footfall Analysis (White card in ref, let's keep it very light/white for contrast!) */}
-        <motion.div
-          custom={2} variants={cardVariants} initial="hidden" animate="visible"
-          className="flex-[1] rounded-[24px] p-6 relative overflow-hidden flex flex-col"
-          style={{ background: '#FFFFFF', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
-        >
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center gap-2">
-              <div className="bg-black text-white p-1 rounded-md"><Activity size={12} /></div>
-              <h3 className="text-[15px] font-bold text-black">Footfall Analysis</h3>
-            </div>
-            <button className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full border border-gray-200 text-black">
-              01-07 Jan <ChevronDown size={12} />
-            </button>
-          </div>
-
-          <div className="flex-1 flex items-center justify-center relative">
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} startAngle={180} endAngle={0} paddingAngle={2} dataKey="value" stroke="none">
-                  {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                </Pie>
-              </PieChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={footfallData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="hour" axisLine={{ stroke: '#2d3440' }} tickLine={false} tick={{ fill: '#8c9baf', fontSize: 10, fontFamily: 'Chakra Petch' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8c9baf', fontSize: 10, fontFamily: 'Chakra Petch' }} dx={-10} />
+                <RechartsTooltip 
+                  cursor={{ stroke: '#4b5563', strokeWidth: 1, strokeDasharray: '4 4' }}
+                  contentStyle={{ backgroundColor: '#0a0c10', border: '1px solid #3b82f6', borderRadius: 0, color: '#e2e8f0', fontFamily: 'Chakra Petch' }}
+                  itemStyle={{ fontSize: 12, fontWeight: 600, color: '#3b82f6' }}
+                  labelStyle={{ color: '#8c9baf', marginBottom: 4, fontSize: 10, letterSpacing: '0.1em' }}
+                />
+                <Area type="monotone" dataKey="count" stroke="#3b82f6" strokeWidth={2} fill="url(#blueGrad)" activeDot={{ r: 4, fill: '#0a0c10', stroke: '#3b82f6', strokeWidth: 2 }} animationDuration={1500} />
+              </AreaChart>
             </ResponsiveContainer>
-            {/* Center label */}
-            <div className="absolute flex flex-col items-center" style={{ top: '60%', transform: 'translateY(-50%)' }}>
-              <span className="text-[20px] font-bold text-black">3,847</span>
-              <span className="text-[11px] text-gray-500 font-medium">Total Footfall</span>
-            </div>
-            {/* Floating legend points based on reference */}
-            <div className="absolute right-4 top-10 space-y-3">
-              {pieData.map(d => (
-                <div key={d.name} className="flex flex-col items-start text-[11px] font-bold text-black">
-                  <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: d.color}}/> {d.value} <span className="text-gray-400 font-medium">{d.name}</span></span>
-                </div>
-              ))}
-            </div>
           </div>
+        </TacticalCard>
 
-          <p className="text-[10px] text-gray-400 mt-2 flex items-center gap-1"><span className="w-3 h-3 border border-gray-300 rounded-full flex items-center justify-center text-[7px]">i</span> Calculated from aggregated activity for the selected period</p>
-        </motion.div>
+        {/* Right: Sector Scan / Node Health */}
+        <div className="flex flex-col gap-6">
+          <TacticalCard title="Sector Scan" icon={Activity} delay={0.6} className="h-48">
+             <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+               {/* Radar Circle */}
+               <div className="absolute w-[200px] h-[200px] rounded-full border border-[#2d3440] flex items-center justify-center">
+                 <div className="w-[100px] h-[100px] rounded-full border border-[#2d3440]" />
+                 <div className="absolute w-full h-[1px] bg-[#2d3440]" />
+                 <div className="absolute h-full w-[1px] bg-[#2d3440]" />
+                 
+                 {/* Sweeper */}
+                 <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-br from-[#10b981]/40 to-transparent animate-sweep" style={{ transformOrigin: 'bottom right' }}></div>
+                 
+                 {/* Dots */}
+                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, type: 'spring' }} className="absolute top-[30%] left-[20%] w-1.5 h-1.5 bg-[#10b981] rounded-full shadow-[0_0_10px_#10b981]" />
+                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5, type: 'spring' }} className="absolute bottom-[40%] right-[25%] w-1.5 h-1.5 bg-[#ef4444] rounded-full shadow-[0_0_10px_#ef4444]" />
+               </div>
+             </div>
+          </TacticalCard>
 
-        {/* Incident Analysis (Bright Neon Green card in ref) */}
-        <motion.div
-          custom={3} variants={cardVariants} initial="hidden" animate="visible"
-          className="flex-[1.4] rounded-[24px] p-6 relative flex flex-col overflow-hidden"
-          style={{ background: '#D4FF59', boxShadow: '0 10px 30px rgba(212,255,89,0.1)' }}
-        >
-          <div className="flex justify-between items-center mb-6 relative z-10">
-            <div className="flex items-center gap-2">
-              <div className="bg-black text-white p-1 rounded-md"><Activity size={12} /></div>
-              <h3 className="text-[15px] font-bold text-black">Incident Analysis</h3>
-            </div>
-            <button className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full border border-black/10 text-black bg-white/40">
-              01-07 Jan <ChevronDown size={12} />
-            </button>
-          </div>
-
-          <div className="flex-1 relative mt-4">
-            {/* Custom chart matching the reference visual style */}
-            <div className="absolute inset-0 flex items-end justify-around pb-4">
-              
-              {/* Bar 1 (Striped) */}
-              <div className="relative w-1/3 h-full flex items-end justify-center">
-                <div className="absolute -top-10 bg-white shadow-sm px-3 py-1.5 rounded-lg text-[11px] font-bold text-black">
-                  Active Alerts 6K <div className="absolute bottom-[-4px] left-4 w-2 h-2 bg-white transform rotate-45" />
-                </div>
-                {/* Striped pattern background for the bar */}
-                <div className="w-[85%] h-[90%] rounded-xl" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 10px)', border: '2px solid rgba(0,0,0,0.05)' }} />
-              </div>
-              
-              {/* Bar 2 (Black solid) */}
-              <div className="relative w-1/3 flex items-end justify-center h-full">
-                <div className="absolute top-10 bg-white shadow-sm px-3 py-1.5 rounded-lg text-[11px] font-bold text-black z-10 w-max">
-                  Resolved Alerts 2K <div className="absolute bottom-[-4px] left-4 w-2 h-2 bg-white transform rotate-45" />
-                </div>
-                <div className="w-[85%] h-[40%] bg-black rounded-xl shadow-xl border border-white/10" style={{ backgroundImage: 'linear-gradient(180deg, #333 0%, #000 100%)' }} />
-              </div>
-
-              {/* Bar 3 (White solid) */}
-              <div className="relative w-1/3 flex items-end justify-center h-full">
-                <div className="absolute top-0 right-0 bg-white shadow-sm px-3 py-1.5 rounded-lg text-[11px] font-bold text-black z-10 w-max translate-x-4">
-                  AI Prevented 4K <div className="absolute bottom-[-4px] right-6 w-2 h-2 bg-white transform rotate-45" />
-                </div>
-                <div className="w-[85%] h-[60%] bg-white rounded-xl shadow-lg border border-white/50" />
-              </div>
-
-            </div>
-          </div>
-        </motion.div>
+          <TacticalCard title="Node Allocation" icon={Database} delay={0.7} className="flex-1">
+             <div className="space-y-4 pt-2">
+                {[
+                  { label: "VPU PROCESSORS", val: "84%", bars: 8, active: 7, color: "#3b82f6" },
+                  { label: "MEMORY POOL", val: "62%", bars: 8, active: 5, color: "#10b981" },
+                  { label: "NEURAL THREADS", val: "95%", bars: 8, active: 8, color: "#f97316" },
+                ].map((stat, idx) => (
+                  <div key={idx} className="space-y-1">
+                    <div className="flex justify-between items-end">
+                      <span className="font-display text-[10px] text-[#8c9baf] tracking-widest">{stat.label}</span>
+                      <span className="font-display text-[12px] font-bold text-[#e2e8f0]">{stat.val}</span>
+                    </div>
+                    <div className="flex gap-1 h-3">
+                      {Array.from({ length: stat.bars }).map((_, i) => (
+                        <div key={i} className="flex-1 rounded-[1px]" style={{ backgroundColor: i < stat.active ? stat.color : '#1e2532' }} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+             </div>
+          </TacticalCard>
+        </div>
       </div>
 
-      {/* ── Bottom Table: Top Opportunities ── */}
-      <motion.div
-        custom={4} variants={cardVariants} initial="hidden" animate="visible"
-        className="rounded-[24px] bg-white p-6 pb-2"
-        style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }}
-      >
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-2">
-            <div className="bg-[#D4FF59] text-black p-1.5 rounded-md"><Activity size={14} /></div>
-            <h3 className="text-[17px] font-bold text-black">Top Security Alerts</h3>
-          </div>
-          <div className="flex gap-2">
-            <button className="flex items-center gap-1 text-[12px] font-medium px-4 py-1.5 rounded-full border border-gray-200 text-black">
-              Month <ChevronDown size={14} />
-            </button>
-            <button className="flex items-center justify-center px-3 rounded-full border border-gray-200 text-black">
-              <Filter size={14} />
-            </button>
-          </div>
-        </div>
-
-        <table className="w-full">
-          <thead>
-            <tr style={{ borderBottom: '1px solid #F0F0F0' }}>
-              {['Name', 'Region', 'AI Confidence Score', 'Risk Level', 'Detection Time', 'Action'].map(h => (
-                <th key={h} className="pb-4 text-left text-[11px] font-bold text-gray-400 capitalize px-2">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {topOpportunities.map((op, i) => (
-              <tr key={i} className="group" style={{ borderBottom: i !== topOpportunities.length -1 ? '1px solid #F8F8F8' : 'none' }}>
-                <td className="py-4 px-2">
-                  <div className="flex items-center gap-3">
-                    {/* Small preview orb */}
-                    <div className="w-8 h-8 rounded-full shadow-sm" style={{ background: 'radial-gradient(circle at 30% 30%, #444 0%, #000 100%)', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }} />
-                    <span className="text-[13px] font-bold text-black">{op.name}</span>
-                  </div>
-                </td>
-                <td className="py-4 px-2 text-[13px] font-bold text-black">{op.region}</td>
-                <td className="py-4 px-2 text-[13px] font-bold text-black">{op.score}%</td>
-                <td className="py-4 px-2">
-                  <div className="flex gap-[2px]">
-                    {Array.from({ length: 10 }).map((_, idx) => (
-                      <div key={idx} className="w-[5px] h-3 rounded-[1px]" style={{ background: idx < op.risk ? '#D4FF59' : '#EEE' }} />
-                    ))}
-                  </div>
-                </td>
-                <td className="py-4 px-2 text-[13px] font-bold text-black">{op.value}</td>
-                <td className="py-4 px-2 text-[13px] font-bold text-black">
-                    <button className="text-[#000] border border-gray-200 px-3 py-1 rounded-full text-[11px] font-bold hover:bg-gray-50 transition-colors">Details</button>
-                </td>
+      {/* ── BOTTOM TABLE: INCIDENT LOG ── */}
+      <TacticalCard title="Incident Event Log" icon={AlertTriangle} delay={0.8} className="p-0">
+        <div className="overflow-x-auto p-1">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#1e2532] border-b border-[#2d3440]">
+                {['Event ID', 'Timestamp', 'Origin Sector', 'Classification', 'Threat Level', 'Action'].map((h) => (
+                  <th key={h} className="px-5 py-3 font-display uppercase tracking-widest text-[10px] font-bold text-[#8c9baf] border-r border-[#2d3440] last:border-0">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </motion.div>
+            </thead>
+            <tbody className="text-[12px] font-medium">
+              <AnimatePresence>
+                {filteredAlerts.slice(0, 6).map((al, idx) => (
+                  <motion.tr 
+                    key={al.id} 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.9 + (idx * 0.05) }}
+                    onMouseEnter={() => setHoveredAlert(al.id)}
+                    onMouseLeave={() => setHoveredAlert(null)}
+                    className="border-b border-[#2d3440]/50 hover:bg-[#1e2532]/60 transition-colors group cursor-crosshair"
+                  >
+                    <td className="px-5 border-r border-[#2d3440]/50 py-3.5 font-display text-[#8c9baf]">#{al.id.split('-')[1] || al.id}</td>
+                    <td className="px-5 border-r border-[#2d3440]/50 py-3.5 text-[#e2e8f0]">{al.timestamp}</td>
+                    <td className="px-5 border-r border-[#2d3440]/50 py-3.5 text-[#8c9baf] uppercase tracking-wider">{al.storeId}</td>
+                    <td className="px-5 border-r border-[#2d3440]/50 py-3.5 text-[#e2e8f0] uppercase tracking-wider">{al.module}</td>
+                    <td className="px-5 border-r border-[#2d3440]/50 py-3.5">
+                      <span className="flex items-center gap-2 font-display uppercase tracking-widest text-[10px] font-bold">
+                        {al.severity === 'critical' ? (
+                          <><div className="w-2 h-2 bg-[#ef4444]" /><span className="text-[#ef4444]">CRITICAL</span></>
+                        ) : al.severity === 'high' ? (
+                          <><div className="w-2 h-2 bg-[#f97316]" /><span className="text-[#f97316]">HIGH</span></>
+                        ) : (
+                          <><div className="w-2 h-2 bg-[#10b981]" /><span className="text-[#10b981]">SECURE</span></>
+                        )}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <motion.button 
+                        whileTap={{ scale: 0.9 }}
+                        className={`font-display text-[10px] tracking-widest font-bold px-3 py-1.5 border ${
+                          hoveredAlert === al.id 
+                            ? 'bg-[#3b82f6] text-[#fff] border-[#3b82f6]' 
+                            : 'bg-transparent text-[#8c9baf] border-[#4b5563]'
+                        } transition-colors uppercase`}
+                      >
+                        {al.status === 'active' ? 'Investigate' : 'Archive'}
+                      </motion.button>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
+        </div>
+      </TacticalCard>
+      
     </div>
   );
 }

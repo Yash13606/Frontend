@@ -23,12 +23,12 @@ const zoneMap = [
 ];
 
 const activityColor: Record<string, string> = {
-  normal:   'rgba(0,255,136,0.06)',
+  normal:   'rgba(255,255,255,0.06)',
   elevated: 'rgba(234,179,8,0.12)',
   high:     'rgba(239,68,68,0.15)',
 };
 const activityBorder: Record<string, string> = {
-  normal:   'rgba(0,255,136,0.08)',
+  normal:   'rgba(255,255,255,0.08)',
   elevated: 'rgba(234,179,8,0.30)',
   high:     'rgba(239,68,68,0.35)',
 };
@@ -57,7 +57,7 @@ export default function PeopleReID() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● PEOPLE RE-ID</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● PEOPLE RE-ID</p>
         <h1 className="text-[28px] font-bold text-white">People Re-Identification</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>Cross-camera tracking, blacklist matching, and crowd monitoring</p>
       </motion.div>
@@ -94,15 +94,15 @@ export default function PeopleReID() {
                     className="flex items-center justify-center rounded-full shrink-0 text-[10px] font-bold"
                     style={{
                       width: 32, height: 32,
-                      background: 'rgba(0,255,136,0.10)',
-                      color: '#00FF88',
+                      background: 'rgba(255,255,255,0.10)',
+                      color: '#FFFFFF',
                     }}
                   >
                     AI
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[12px] font-semibold" style={{ color: '#00FF88' }}>{event.id}</span>
+                      <span className="text-[12px] font-semibold" style={{ color: '#FFFFFF' }}>{event.id}</span>
                       <SeverityPill severity={event.severity as 'critical'|'high'|'medium'|'low'} />
                     </div>
                     <p className="text-[12px]" style={{ color: '#888' }}>{event.type} · <span style={{ color: '#555' }}>{event.zone}</span></p>
@@ -148,7 +148,7 @@ export default function PeopleReID() {
             ))}
           </div>
           <div className="flex gap-4 mt-4 text-[10px]" style={{ color: '#555' }}>
-            {[['Normal','#00FF88'], ['Elevated','#EAB308'], ['High Alert','#EF4444']].map(([label, color]) => (
+            {[['Normal','#FFFFFF'], ['Elevated','#EAB308'], ['High Alert','#EF4444']].map(([label, color]) => (
               <span key={label} className="flex items-center gap-1.5">
                 <span className="inline-block w-2 h-2 rounded-full" style={{ background: color as string }} />
                 {label}
@@ -167,7 +167,7 @@ export default function PeopleReID() {
         style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>BLACKLIST TRACKING</p>
+          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>BLACKLIST TRACKING</p>
         </div>
         <table className="w-full">
           <thead>
@@ -188,7 +188,7 @@ export default function PeopleReID() {
                 <td className="px-4 py-3">
                   <button
                     className="text-[11px] font-semibold px-3 py-1 rounded-lg transition-opacity hover:opacity-70 opacity-60 cursor-not-allowed"
-                    style={{ color: '#00FF88', border: '1px solid rgba(0,255,136,0.25)' }}
+                    style={{ color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.25)' }}
                     disabled
                   >
                     View Footage

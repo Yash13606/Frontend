@@ -1,78 +1,146 @@
-import { Shield } from "lucide-react";
+import { Shield, Activity, Wifi, Lock, Terminal, Cpu, Database, Network } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const footerLinks: Record<string, { label: string; to: string }[]> = {
-  Services: [
-    { label: "Theft Prevention", to: "/capabilities/theft-prevention" },
-    { label: "Customer Analytics", to: "/capabilities/customer-analytics" },
-    { label: "Staff Monitoring", to: "/capabilities/staff-monitor" },
-    { label: "Fire Detection", to: "/capabilities/fire-detection" },
-    { label: "People Re-ID", to: "/capabilities/people-reid" },
+const footerLinks = {
+  Capabilities: [
+    { label: "Theft Prevention", to: "/capabilities/theft-prevention", id: "CAP_01" },
+    { label: "Customer Analytics", to: "/capabilities/customer-analytics", id: "CAP_02" },
+    { label: "Staff Monitoring", to: "/capabilities/staff-monitor", id: "CAP_03" },
+    { label: "Fire Detection", to: "/capabilities/fire-detection", id: "CAP_04" },
+    { label: "People Re-ID", to: "/capabilities/people-reid", id: "CAP_05" },
   ],
-  Company: [
-    { label: "About Us", to: "/company" },
-    { label: "Careers", to: "/careers" },
-    { label: "Press", to: "/company#press" },
-    { label: "Contact", to: "/company#contact" },
-    { label: "Partners", to: "/company#contact" },
+  Infrastructure: [
+    { label: "Edge Hardware", to: "/approach", id: "INF_01" },
+    { label: "Compliance", to: "/approach", id: "INF_02" },
+    { label: "Encryption", to: "/approach", id: "INF_03" },
+    { label: "Connectivity", to: "/approach", id: "INF_04" },
+    { label: "Retraining", to: "/approach", id: "INF_05" },
   ],
-  Resources: [
-    { label: "Blog", to: "/case-studies" },
-    { label: "Case Studies", to: "/case-studies" },
-    { label: "Documentation", to: "/approach" },
-    { label: "API Reference", to: "/approach" },
-    { label: "Support", to: "/company#contact" },
+  Intel: [
+    { label: "Documentation", to: "/approach", id: "ITL_01" },
+    { label: "Log Files", to: "/case-studies", id: "ITL_02" },
+    { label: "Support Node", to: "/company#contact", id: "ITL_03" },
   ],
 };
 
-const Footer = () => (
-  <footer className="border-t border-border bg-transparent">
-    <div className="mx-auto max-w-7xl px-4 md:px-6 py-10 md:py-16">
-      <div className="grid gap-8 md:gap-12 sm:grid-cols-2 md:grid-cols-4">
-        <div className="sm:col-span-2 md:col-span-1 pb-6 border-b border-border sm:border-0">
-          <Link to="/" className="flex items-center gap-2 mb-4">
-            <Shield className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold text-foreground">VisionIQ</span>
-          </Link>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-            AI-powered smart surveillance for retail and commercial enterprises.
-          </p>
-          <div className="flex gap-4">
-            {["Twitter", "LinkedIn", "GitHub"].map((s) => (
-              <span key={s} className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center">
-                {s}
-              </span>
+const Footer = () => {
+  return (
+    <footer className="relative bg-[#000000] pt-32 pb-12 overflow-hidden border-t border-white/10">
+      {/* Scanline Effect */}
+      <div className="scanline" />
+      
+      {/* Background Grid Accent */}
+      <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
+
+      <div className="mx-auto max-w-[1400px] px-4 md:px-8 relative z-10">
+        {/* Top Branding Section */}
+        <div className="mb-24 flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+          <div className="max-w-xl">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 mb-8"
+            >
+              <div className="p-3 bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                <Shield className="h-8 w-8" />
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter font-[Chakra Petch]">
+                VisionIQ
+              </h2>
+            </motion.div>
+            <p className="text-lg md:text-xl font-bold text-gray-500 uppercase tracking-[0.2em] leading-tight">
+              Industrial-grade AI surveillance for high-density retail and commercial enterprises.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-12">
+            {[
+              { icon: <Cpu className="w-5 h-5" />, label: "Edge_Compute", status: "ONLINE" },
+              { icon: <Network className="w-5 h-5" />, label: "Node_Mesh", status: "ENCRYPTED" },
+              { icon: <Database className="w-5 h-5" />, label: "Data_Lake", status: "SECURE" },
+            ].map((node, i) => (
+              <div key={i} className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-white/40">
+                  {node.icon}
+                  <span className="text-[10px] font-mono font-bold tracking-[0.3em] uppercase">{node.label}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
+                  <span className="text-xs font-mono font-black text-white tracking-[0.1em]">{node.status}</span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
-        {Object.entries(footerLinks).map(([title, links], idx) => (
-          <div key={title} className={`pb-6 ${idx < Object.keys(footerLinks).length - 1 ? "border-b border-border sm:border-0" : "sm:border-0"}`}>
-            <h4 className="text-sm font-semibold text-foreground mb-3 md:mb-4">{title}</h4>
-            <ul className="space-y-1 md:space-y-3">
-              {links.map((link) => (
-                <li key={link.label}>
-                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] flex items-center">
-                    {link.label}
-                  </Link>
-                </li>
+        {/* Link Matrix */}
+        <div className="grid gap-16 md:grid-cols-2 lg:grid-cols-4 border-t border-white/10 pt-16">
+          <div className="lg:col-span-1">
+            <h4 className="text-xs font-black text-[#00F0FF] uppercase tracking-[0.4em] mb-12 flex items-center gap-3">
+              <Terminal className="w-4 h-4" />
+              Connect_Protocol
+            </h4>
+            <div className="flex flex-col gap-6">
+              {["TWITTER", "LINKEDIN", "GITHUB"].map((s) => (
+                <a 
+                  key={s} 
+                  href="#" 
+                  className="group flex items-center justify-between p-4 border border-white/5 hover:border-[#00F0FF]/40 hover:bg-white/5 transition-all duration-300"
+                >
+                  <span className="text-xs font-mono font-bold text-gray-400 group-hover:text-white tracking-[0.3em]">{s}</span>
+                  <Activity className="w-4 h-4 text-white/10 group-hover:text-[#00F0FF] group-hover:animate-pulse" />
+                </a>
               ))}
-            </ul>
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
 
-    <div className="border-t border-border">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span className="text-xs text-muted-foreground text-center">© 2026 VisionIQ Technologies Pvt. Ltd.</span>
-        <div className="flex gap-6">
-          <span className="text-xs text-muted-foreground hover:text-foreground cursor-pointer min-h-[44px] flex items-center">Privacy</span>
-          <span className="text-xs text-muted-foreground hover:text-foreground cursor-pointer min-h-[44px] flex items-center">Terms</span>
+          {Object.entries(footerLinks).map(([title, links], idx) => (
+            <div key={title}>
+              <h4 className="text-xs font-black text-white uppercase tracking-[0.4em] mb-12 flex items-center gap-3 font-[Chakra Petch]">
+                <span className="text-gray-600 font-mono text-[10px]">0{idx + 1} //</span>
+                {title}
+              </h4>
+              <ul className="space-y-6">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link 
+                      to={link.to} 
+                      className="group flex flex-col gap-1 transition-all duration-300"
+                    >
+                      <span className="text-[10px] font-mono text-gray-600 group-hover:text-[#00F0FF] transition-colors tracking-widest">{link.id}</span>
+                      <span className="text-sm font-bold text-gray-400 group-hover:text-white uppercase tracking-widest transition-colors">
+                        {link.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Status Bar */}
+        <div className="mt-32 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 bg-black">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-ping" />
+              <span className="text-[10px] font-mono text-gray-500 font-bold tracking-[0.4em]">SYSTEM_READY_V2.6</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <span className="text-[10px] font-mono text-gray-700 hover:text-white cursor-pointer tracking-[0.4em] uppercase transition-colors font-bold">Privacy_Protocol</span>
+              <span className="text-[10px] font-mono text-gray-700 hover:text-white cursor-pointer tracking-[0.4em] uppercase transition-colors font-bold">Service_Terms</span>
+            </div>
+          </div>
+
+          <div className="text-[10px] font-mono text-gray-700 tracking-[0.4em] uppercase font-bold text-center md:text-right">
+            © 2026 VISIONIQ_CORP // DATA_DRIVEN_SECURITY
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 export default Footer;

@@ -7,7 +7,7 @@ import { useDashboardStore } from '@/store/dashboardStore';
 import { cameras, alerts, incidentTrend } from '@/data/mockData';
 
 const CHART_TOOLTIP = {
-  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(0,255,136,0.30)', borderRadius: 8 },
+  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(255,255,255,0.30)', borderRadius: 8 },
   labelStyle: { color: '#888', fontSize: 12 },
   itemStyle: { color: '#FFF', fontSize: 13 },
 };
@@ -31,7 +31,7 @@ export default function FireSafety() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● FIRE & SAFETY</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● FIRE & SAFETY</p>
         <h1 className="text-[28px] font-bold text-white">Fire & Safety</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>97%+ accurate fire detection and thermal monitoring</p>
       </motion.div>
@@ -50,7 +50,7 @@ export default function FireSafety() {
         className="rounded-xl p-5 mb-5"
         style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-4" style={{ color: '#00FF88' }}>CAMERA STATUS GRID</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-4" style={{ color: '#FFFFFF' }}>CAMERA STATUS GRID</p>
         <div className="grid grid-cols-3 gap-3">
           {filteredCameras.map((cam, i) => {
             const hasAlert = hasFireAlert(cam.id);
@@ -108,7 +108,7 @@ export default function FireSafety() {
                   dataKey="value"
                   animationBegin={200} animationDuration={800}
                 >
-                  <Cell fill="#00FF88" />
+                  <Cell fill="#FFFFFF" />
                   <Cell fill="rgba(255,255,255,0.08)" />
                 </Pie>
                 <Tooltip {...CHART_TOOLTIP} />

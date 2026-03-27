@@ -19,7 +19,7 @@ const SocialProofTicker = () => (
         {[...brands, ...brands].map((name, i) => (
           <span
             key={i}
-            className="text-lg font-semibold text-muted-foreground/40 flex-shrink-0 transition-all duration-300 hover:text-primary hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(0,255,136,0.6)] cursor-default"
+            className="text-lg font-semibold text-muted-foreground/40 flex-shrink-0 transition-all duration-300 hover:text-primary hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] cursor-default"
           >
             {name}
           </span>

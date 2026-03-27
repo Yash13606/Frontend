@@ -26,7 +26,7 @@ const notifications = [
 ];
 
 const userRoles: Record<string, { color: string; bg: string }> = {
-  'Super Admin':    { color: '#00FF88', bg: 'rgba(0,255,136,0.10)' },
+  'Super Admin':    { color: '#FFFFFF', bg: 'rgba(255,255,255,0.10)' },
   'Store Manager':  { color: '#6366F1', bg: 'rgba(99,102,241,0.10)' },
   'Security':       { color: '#F97316', bg: 'rgba(249,115,22,0.10)' },
   'Analyst':        { color: '#EAB308', bg: 'rgba(234,179,8,0.10)' },
@@ -48,7 +48,7 @@ export default function Settings() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● SETTINGS</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● SETTINGS</p>
         <h1 className="text-[28px] font-bold text-white">Settings</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>Manage your organization, stores, cameras, and preferences</p>
       </motion.div>
@@ -61,9 +61,9 @@ export default function Settings() {
             onClick={() => setActiveTab(tab)}
             className="px-4 py-2 rounded-lg text-[13px] font-medium transition-all"
             style={{
-              background: activeTab === tab ? 'rgba(0,255,136,0.15)' : '#111',
-              color: activeTab === tab ? '#00FF88' : '#888',
-              border: `1px solid ${activeTab === tab ? 'rgba(0,255,136,0.40)' : 'rgba(255,255,255,0.07)'}`,
+              background: activeTab === tab ? 'rgba(255,255,255,0.15)' : '#111',
+              color: activeTab === tab ? '#FFFFFF' : '#888',
+              border: `1px solid ${activeTab === tab ? 'rgba(255,255,255,0.40)' : 'rgba(255,255,255,0.07)'}`,
             }}
           >
             {tab}
@@ -81,8 +81,8 @@ export default function Settings() {
         {activeTab === 'Organization' && (
           <div className="rounded-xl p-6" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="flex items-start justify-between mb-6">
-              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>ORGANIZATION DETAILS</p>
-              <span className="px-3 py-1 rounded-full text-[11px] font-semibold" style={{ color: '#00FF88', background: 'rgba(0,255,136,0.10)', border: '1px solid rgba(0,255,136,0.25)' }}>
+              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>ORGANIZATION DETAILS</p>
+              <span className="px-3 py-1 rounded-full text-[11px] font-semibold" style={{ color: '#FFFFFF', background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.25)' }}>
                 ENTERPRISE PLAN
               </span>
             </div>
@@ -102,7 +102,7 @@ export default function Settings() {
             <div className="mt-4">
               <button
                 className="px-5 py-2 rounded-lg text-[13px] font-semibold transition-all hover:opacity-90"
-                style={{ background: 'rgba(0,255,136,0.15)', color: '#00FF88', border: '1px solid rgba(0,255,136,0.40)' }}
+                style={{ background: 'rgba(255,255,255,0.15)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.40)' }}
               >
                 Save Changes
               </button>
@@ -114,7 +114,7 @@ export default function Settings() {
         {activeTab === 'Stores' && (
           <div className="rounded-xl overflow-hidden" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>STORE MANAGEMENT</p>
+              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>STORE MANAGEMENT</p>
             </div>
             <table className="w-full">
               <thead>
@@ -132,7 +132,7 @@ export default function Settings() {
                     <td className="px-4 py-3 text-[13px]" style={{ color: '#888' }}>{s.cameras}</td>
                     <td className="px-4 py-3">
                       <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full"
-                        style={{ color: storeStatus[i] ? '#00FF88' : '#555', background: storeStatus[i] ? 'rgba(0,255,136,0.10)' : 'rgba(255,255,255,0.05)' }}>
+                        style={{ color: storeStatus[i] ? '#FFFFFF' : '#555', background: storeStatus[i] ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.05)' }}>
                         {storeStatus[i] ? 'ONLINE' : 'PAUSED'}
                       </span>
                     </td>
@@ -150,7 +150,7 @@ export default function Settings() {
         {activeTab === 'Cameras' && (
           <div className="rounded-xl overflow-hidden" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>CAMERA MANAGEMENT</p>
+              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>CAMERA MANAGEMENT</p>
             </div>
             <table className="w-full">
               <thead>
@@ -168,7 +168,7 @@ export default function Settings() {
                     <td className="px-4 py-3 text-[13px]" style={{ color: '#888' }}>{c.zone}</td>
                     <td className="px-4 py-3">
                       <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full"
-                        style={{ color: camStatus[i] ? '#00FF88' : '#555', background: camStatus[i] ? 'rgba(0,255,136,0.10)' : 'rgba(255,255,255,0.05)' }}>
+                        style={{ color: camStatus[i] ? '#FFFFFF' : '#555', background: camStatus[i] ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.05)' }}>
                         {camStatus[i] ? 'ONLINE' : 'OFFLINE'}
                       </span>
                     </td>
@@ -186,7 +186,7 @@ export default function Settings() {
         {activeTab === 'Users' && (
           <div className="rounded-xl overflow-hidden" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>USER MANAGEMENT</p>
+              <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>USER MANAGEMENT</p>
             </div>
             <table className="w-full">
               <thead>
@@ -221,7 +221,7 @@ export default function Settings() {
         {/* Notifications Tab */}
         {activeTab === 'Notifications' && (
           <div className="rounded-xl p-6" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-5" style={{ color: '#00FF88' }}>NOTIFICATION PREFERENCES</p>
+            <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-5" style={{ color: '#FFFFFF' }}>NOTIFICATION PREFERENCES</p>
             <div className="space-y-0">
               {notifications.map((n, i) => (
                 <div

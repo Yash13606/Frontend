@@ -9,11 +9,11 @@ import { DitheringShader } from "@/components/ui/dithering-shader";
 const stats = [
   { value: 2.4, prefix: "₹", suffix: "Cr+", label: "Shrinkage Prevented" },
   { value: 500, prefix: "", suffix: "+", label: "Cameras Deployed" },
-  { value: 97, prefix: "", suffix: "%+", label: "Fire Detection Accuracy" },
-  { value: 60, prefix: "", suffix: "%", label: "Shrinkage Reduction" },
+  { value: 97, prefix: "", suffix: "%", label: "Fire Detection Acc" },
+  { value: 60, prefix: "", suffix: "%", label: "Loss Reduction" },
 ];
 
-const cycleWords = ["Threat", "Shoplifter", "Fire", "Blind Spot"];
+const cycleWords = ["Threat", "Shoplifter", "Blind Spot", "Anomaly"];
 
 function AnimatedCounter({ value, prefix, suffix }: { value: number; prefix: string; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -24,11 +24,11 @@ function AnimatedCounter({ value, prefix, suffix }: { value: number; prefix: str
     if (!inView) return;
     const duration = 2000;
     const startTime = performance.now();
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeOutExpos = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      setCount(easeOutCubic(progress) * value);
+      setCount(easeOutExpos(progress) * value);
       if (progress < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
@@ -37,7 +37,7 @@ function AnimatedCounter({ value, prefix, suffix }: { value: number; prefix: str
   const display = value < 10 ? count.toFixed(1) : Math.round(count);
 
   return (
-    <span ref={ref} className="text-3xl font-extrabold text-primary sm:text-4xl md:text-5xl lg:text-6xl">
+    <span ref={ref} className="text-3xl sm:text-5xl font-black text-white font-[Chakra Petch] tracking-tighter drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
       {prefix}{display}{suffix}
     </span>
   );
@@ -46,20 +46,20 @@ function AnimatedCounter({ value, prefix, suffix }: { value: number; prefix: str
 function CyclingWord() {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    const interval = setInterval(() => setIndex((p) => (p + 1) % cycleWords.length), 2500);
+    const interval = setInterval(() => setIndex((p) => (p + 1) % cycleWords.length), 2200);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <span className="relative inline-block min-w-[160px] sm:min-w-[200px] md:min-w-[280px] lg:min-w-[360px] text-left align-bottom">
+    <span className="relative inline-flex min-w-[200px] sm:min-w-[300px] text-left">
       <AnimatePresence mode="wait">
         <motion.span
           key={cycleWords[index]}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.35, ease: "easeInOut" }}
-          className="inline-block text-primary"
+          initial={{ opacity: 0, y: 15, filter: "blur(4px)", scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+          exit={{ opacity: 0, y: -15, filter: "blur(4px)", scale: 1.05 }}
+          transition={{ duration: 0.4, type: "spring", bounce: 0 }}
+          className="inline-block text-white border-b-4 border-white pb-1"
         >
           {cycleWords[index]}
         </motion.span>
@@ -68,94 +68,107 @@ function CyclingWord() {
   );
 }
 
-const backedByLogos = ["TechCorp", "RetailMax", "SecureNet", "DataVault", "CloudPeak"];
-
-const HeroSection = () => (
-  <section id="hero-section" className="relative min-h-[90vh] md:min-h-screen pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden bg-transparent flex flex-col justify-center">
-    {/* Dithering wave background — light green on near-black */}
-    <div className="absolute inset-0 z-0 pointer-events-none">
-      <DitheringShader
-        shape="wave"
-        type="8x8"
-        colorBack="#000500"
-        colorFront="#4ade80"
-        pxSize={3}
-        speed={0.6}
-        className="w-full h-full"
-        style={{ width: "100%", height: "100%" }}
-        width={1920}
-        height={1080}
-      />
-    </div>
-    
-    {/* Centered Gradient Overlay for Text Readability */}
-    <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.8)_100%)]" />
-
-    <div className="relative z-[2] mx-auto max-w-7xl px-4 md:px-6 w-full mt-auto mb-auto flex flex-col items-center">
+const HeroSection = () => {
+  return (
+    <section id="hero-section" className="relative min-h-screen overflow-hidden bg-[#050505] flex flex-col border-b border-white/10">
       
-      {/* Centered Main Content */}
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.7 }}
-        className="flex flex-col items-center text-center max-w-4xl w-full"
-      >
-        <div className="mb-6 md:mb-8">
-          <SectionBadge text="FOR RETAIL THAT CANNOT LOSE" />
-        </div>
-        
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black leading-[1.1] tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/60 mb-6 w-full">
-          Always Ahead<br className="hidden md:block" /> of the <CyclingWord />
-        </h1>
-        
-        <p className="mt-4 md:mt-6 max-w-2xl text-base md:text-xl leading-relaxed text-muted-foreground">
-          Stop shrinkage, understand your customers, and protect your people — with one AI camera platform built specifically for retail.
-        </p>
+      {/* Tactical Background Grid */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+        }}
+      />
 
-        <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-            <Link to="/dashboard" className="w-full block">
-              <Button size="lg" className="w-full rounded-full font-bold text-base h-14 px-8 shadow-[0_0_30px_rgba(0,255,136,0.2)] hover:shadow-[0_0_40px_rgba(0,255,136,0.5)] transition-shadow duration-300">
-                Dashboard <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </motion.div>
+      {/* Dithering Shader - Tactical Monochrome */}
+      <div className="absolute inset-0 z-[1] pointer-events-none opacity-40 mix-blend-screen">
+        <DitheringShader
+          shape="wave"
+          type="4x4"
+          colorBack="#000000"
+          colorFront="#ffffff"
+          pxSize={4}
+          speed={0.3}
+          className="w-full h-full"
+          width={1920}
+          height={1080}
+        />
+      </div>
+      
+      {/* Center Vignette */}
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-[radial-gradient(circle_at_center,rgba(5,5,5,0)_0%,rgba(5,5,5,0.9)_80%)]" />
+
+      { /* Main Content Area - Top-aligned with substantial padding for a premium feel */ }
+      <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-8 w-full flex-grow flex flex-col pt-32 md:pt-48 pb-20 text-left items-start">
+        
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="flex flex-col items-start text-left max-w-5xl w-full"
+        >
+          <div className="mb-6">
+            <SectionBadge text="TACTICAL INTELLIGENCE NODE" />
+          </div>
           
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-            <Link to="/approach" className="w-full block">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full rounded-full font-semibold text-base border-white/20 text-white bg-white/5 hover:bg-white/10 backdrop-blur-md h-14 px-8 transition-colors"
-              >
-                Our Approach
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-black leading-[1.05] tracking-tight text-white mb-8 w-full uppercase" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+            Always Ahead<br /> 
+            of the <CyclingWord />
+          </h1>
+          
+          <p className="max-w-2xl text-lg md:text-2xl leading-relaxed text-gray-400 font-medium border-l-2 border-white/20 pl-6">
+            Stop shrinkage, map customer flow, and secure your perimeter — utilizing one industrial-grade AI camera framework.
+          </p>
 
-      {/* Horizontal Stats Grid */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link to="/dashboard" className="w-full block">
+                <Button size="lg" className="w-full rounded-none font-bold text-lg h-16 px-10 bg-white text-black hover:bg-gray-200 uppercase tracking-widest relative overflow-hidden group">
+                  <span className="relative z-10 flex items-center">
+                    Enter Command Center <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 h-full w-full bg-black/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+                </Button>
+              </Link>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link to="/approach" className="w-full block">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full rounded-none font-bold text-lg h-16 px-10 border-2 border-white/30 text-white bg-transparent hover:bg-white/5 uppercase tracking-widest"
+                >
+                  System Specs
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Tactical Bottom Bar - Normal document flow instead of absolute positioning */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
-        className="w-full mt-8 md:mt-10 pt-6 border-t border-white/10"
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4, type: "spring", bounce: 0 }}
+        className="w-full relative mt-auto border-t border-white/10 bg-black/80 backdrop-blur-xl z-20"
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col items-center justify-center p-4">
-              <div className="mb-2">
-                <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-              </div>
-              <span className="text-xs md:text-sm font-medium text-gray-400 uppercase tracking-widest">{stat.label}</span>
+            <div key={idx} className="flex flex-col py-6 px-4 md:px-8 group">
+              <span className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-2 group-hover:text-white transition-colors">{stat.label}</span>
+              <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
             </div>
           ))}
         </div>
       </motion.div>
-      
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default HeroSection;

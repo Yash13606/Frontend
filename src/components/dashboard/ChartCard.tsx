@@ -19,8 +19,8 @@ export const ChartCard = ({ title, children, rightLabel, index = 0 }: ChartCardP
       border: '1px solid rgba(255,255,255,0.08)',
     }}
     onMouseEnter={e => {
-      (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,255,136,0.25)';
-      (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 20px rgba(0,255,136,0.08)';
+      (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.25)';
+      (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 20px rgba(255,255,255,0.08)';
     }}
     onMouseLeave={e => {
       (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)';
@@ -28,7 +28,7 @@ export const ChartCard = ({ title, children, rightLabel, index = 0 }: ChartCardP
     }}
   >
     <div className="flex items-center justify-between mb-4">
-      <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>
+      <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>
         {title}
       </p>
       {rightLabel && <div>{rightLabel}</div>}

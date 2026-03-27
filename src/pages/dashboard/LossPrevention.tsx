@@ -8,7 +8,7 @@ import { useDashboardStore } from '@/store/dashboardStore';
 import { alerts, cameras } from '@/data/mockData';
 
 const CHART_TOOLTIP = {
-  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(0,255,136,0.30)', borderRadius: 8 },
+  contentStyle: { background: '#1A1A1A', border: '1px solid rgba(255,255,255,0.30)', borderRadius: 8 },
   labelStyle: { color: '#888', fontSize: 12 },
   itemStyle: { color: '#FFF', fontSize: 13 },
 };
@@ -50,7 +50,7 @@ export default function LossPrevention() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● LOSS PREVENTION</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● LOSS PREVENTION</p>
         <h1 className="text-[28px] font-bold text-white">Loss Prevention</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>AI-powered theft detection and incident management</p>
       </motion.div>
@@ -71,9 +71,9 @@ export default function LossPrevention() {
                 onClick={() => setActiveFilter(f)}
                 className="px-3 py-1 rounded-full text-[11px] font-medium transition-all"
                 style={{
-                  background: activeFilter === f ? 'rgba(0,255,136,0.15)' : 'transparent',
-                  color: activeFilter === f ? '#00FF88' : '#555',
-                  border: `1px solid ${activeFilter === f ? 'rgba(0,255,136,0.40)' : 'rgba(255,255,255,0.06)'}`,
+                  background: activeFilter === f ? 'rgba(255,255,255,0.15)' : 'transparent',
+                  color: activeFilter === f ? '#FFFFFF' : '#555',
+                  border: `1px solid ${activeFilter === f ? 'rgba(255,255,255,0.40)' : 'rgba(255,255,255,0.06)'}`,
                 }}
               >
                 {f}
@@ -99,7 +99,7 @@ export default function LossPrevention() {
                   <p className="text-[13px] font-medium truncate" style={{ color: '#CCC' }}>{alert.type}</p>
                   <p className="text-[11px]" style={{ color: '#555' }}>{alert.cameraId} · {alert.timestamp}</p>
                 </div>
-                <button className="text-[11px] font-semibold shrink-0" style={{ color: '#00FF88' }}>Assign</button>
+                <button className="text-[11px] font-semibold shrink-0" style={{ color: '#FFFFFF' }}>Assign</button>
               </div>
             ))}
           </div>
@@ -130,7 +130,7 @@ export default function LossPrevention() {
         style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>CAMERA INCIDENT COUNT</p>
+          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>CAMERA INCIDENT COUNT</p>
         </div>
         <table className="w-full">
           <thead>
@@ -149,7 +149,7 @@ export default function LossPrevention() {
                 <td className="px-4 py-3 text-[13px]" style={{ color: '#555' }}>{c.lastIncident}</td>
                 <td className="px-4 py-3">
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full"
-                    style={{ color: c.status === 'online' ? '#00FF88' : '#EF4444', background: c.status === 'online' ? 'rgba(0,255,136,0.1)' : 'rgba(239,68,68,0.1)' }}>
+                    style={{ color: c.status === 'online' ? '#FFFFFF' : '#EF4444', background: c.status === 'online' ? 'rgba(255,255,255,0.1)' : 'rgba(239,68,68,0.1)' }}>
                     {c.status.toUpperCase()}
                   </span>
                 </td>

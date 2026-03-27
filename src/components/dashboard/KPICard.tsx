@@ -62,19 +62,7 @@ export const KPICard = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut', delay: index * 0.06 }}
       whileHover={{ scale: 1.005 }}
-      className="relative rounded-xl p-5 cursor-default group transition-all duration-150"
-      style={{
-        background: '#111111',
-        border: '1px solid rgba(255,255,255,0.08)',
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,255,136,0.40)';
-        (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 20px rgba(0,255,136,0.15)';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.08)';
-        (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
-      }}
+      className="relative p-5 cursor-default group premium-card"
     >
       <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-3" style={{ color: '#444444' }}>
         {label}
@@ -86,18 +74,17 @@ export const KPICard = ({
         <p className="text-[13px] mb-2" style={{ color: '#888888' }}>{subLabel}</p>
       )}
       {delta && (
-        <p className="text-[12px] mb-2" style={{ color: deltaType === 'down' ? '#EF4444' : '#00FF88' }}>
+        <p className="text-[12px] mb-2" style={{ color: deltaType === 'down' ? '#EF4444' : '#FFFFFF' }}>
           {deltaType === 'up' ? '↑' : deltaType === 'down' ? '↓' : ''} {delta}
         </p>
       )}
       {showProgress && progressValue !== undefined && (
-        <div className="mt-3 h-1 w-full rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+        <div className="mt-3 h-1 w-full rounded-full bg-white/10 overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progressValue}%` }}
             transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-            className="h-1 rounded-full"
-            style={{ background: '#00FF88' }}
+            className="h-full bg-white"
           />
         </div>
       )}

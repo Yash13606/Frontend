@@ -1,8 +1,8 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { useRef } from "react";
 import {
   Users, BarChart3, ShieldAlert, UserSearch, Lock,
-  ClipboardCheck, Flame, Thermometer, ArrowRight,
+  ClipboardCheck, Flame, Thermometer, ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SectionBadge from "./SectionBadge";
@@ -10,36 +10,43 @@ import SectionBadge from "./SectionBadge";
 const phases = [
   {
     label: "PHASE 1",
-    title: "Understand Your Customers",
+    title: "Customer Intelligence",
     modules: [
-      { icon: BarChart3, name: "Customer Behavior Analytics", desc: "Real-time heat maps, dwell tracking, footfall counting", slug: "customer-analytics" },
-      { icon: Users, name: "Footfall Analytics", desc: "Bi-directional people counting with 98% accuracy", slug: "footfall-analytics" },
+      { icon: BarChart3, name: "Behavior Analytics", desc: "Real-time heat maps, dwell tracking, and high-fidelity footfall counting.", slug: "customer-analytics" },
+      { icon: Users, name: "Footfall Tracking", desc: "Bi-directional people counting utilizing edge AI with 98% validated accuracy.", slug: "footfall-analytics" },
     ],
   },
   {
     label: "PHASE 2",
-    title: "Protect Your Business",
+    title: "Perimeter Security",
     modules: [
-      { icon: ShieldAlert, name: "Theft & Loss Prevention", desc: "Concealment gesture AI, POS fraud matching, live alerts", slug: "theft-prevention" },
-      { icon: UserSearch, name: "People Re-ID", desc: "Blacklist re-identification across camera zones", slug: "people-reid" },
-      { icon: Lock, name: "Unauthorized Zone Access", desc: "Staff-only area breach alerts", slug: "unauthorized-access" },
+      { icon: ShieldAlert, name: "Loss Prevention", desc: "Concealment gesture AI, POS fraud matching, and live threat-vector alerts.", slug: "theft-prevention" },
+      { icon: UserSearch, name: "People Re-ID", desc: "Global blacklist re-identification across all physical camera zones.", slug: "people-reid" },
+      { icon: Lock, name: "Access Violation", desc: "Zero-latency staff-only area and restricted perimeter breach alerts.", slug: "unauthorized-access" },
     ],
   },
   {
     label: "PHASE 3",
-    title: "Operate With Assurance",
+    title: "Operations Command",
     modules: [
-      { icon: ClipboardCheck, name: "Staff Productivity Monitor", desc: "Zone compliance, task verification, idle time tracking", slug: "staff-monitor" },
-      { icon: Flame, name: "AI Fire & Smoke Detection", desc: "97%+ accuracy distinguishing real fire from steam/cigarettes", slug: "fire-detection" },
-      { icon: Thermometer, name: "Thermal Anomaly Detection", desc: "Electrical fire and equipment overheating detection", slug: "thermal-detection" },
+      { icon: ClipboardCheck, name: "Staff Productivity", desc: "Zone compliance enforcement, task verification, and idle time telemetry.", slug: "staff-monitor" },
+      { icon: Flame, name: "Fire AI Diagnostics", desc: "97%+ accuracy distinguishing true structural fire conditions from steam/smoke.", slug: "fire-detection" },
+      { icon: Thermometer, name: "Thermal Anomaly", desc: "Advanced electrical fire and heavy machinery overheating detection algorithms.", slug: "thermal-detection" },
     ],
   },
 ];
 
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+  },
+};
+
+const itemAnim: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
 };
 
 const ModulePhases = () => {
@@ -49,99 +56,113 @@ const ModulePhases = () => {
     offset: ["start end", "end start"],
   });
 
-  // Calculate the height of the glowing vertical line based on scroll
   const lineHeight = useTransform(scrollYProgress, [0, 0.8], ["0%", "100%"]);
 
   return (
-    <section className="py-20 md:py-32 bg-transparent relative overflow-hidden" ref={containerRef}>
+    <section className="py-16 md:py-24 bg-[#000000] relative overflow-hidden border-b border-white/10" ref={containerRef}>
       
-      {/* Background ambient glows */}
-      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] -z-10 pointer-events-none" />
+      {/* Background Tech Details */}
+      <div className="absolute top-10 right-10 text-[10px] sm:text-xs text-white/20 font-mono text-right select-none">
+        <p>VSN-IQ :: PLATFORM_SYS / v4.2.0</p>
+        <p>ENCRYPTION: AES-256-GCM</p>
+        <p>TELEMETRY LINK: ESTABLISHED</p>
+      </div>
 
-      <div className="mx-auto max-w-7xl px-4 md:px-6 relative z-10">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 relative z-10">
         
         {/* Header Section */}
-        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="text-center mb-16 md:mb-24">
-          <SectionBadge text="5-MODULE PLATFORM" />
-          <h2 className="text-3xl font-bold text-foreground md:text-5xl lg:text-6xl mt-6 tracking-tight">
-            Complete Business Intelligence.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">One Contract.</span>
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.6 }} className="mb-20">
+          <SectionBadge text="TACTICAL PLATFORM DIRECTORY" />
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mt-6 tracking-tighter uppercase" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+            Complete Spectrum<br />
+            Intelligence.
           </h2>
-          <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Comprehensive protection at every stage — from storefront to back office. Deploy the exact AI superpower you need, precisely when you need it.
+          <p className="mt-6 text-base md:text-xl text-gray-400 max-w-2xl leading-relaxed font-medium pb-8 border-b border-white/10 border-dashed">
+            Comprehensive surveillance operations scaling from localized storefronts to vast enterprise back-office arrays. Deploy specialized tactical AI frameworks seamlessly.
           </p>
         </motion.div>
 
-        {/* Vertical Timeline Layout - Left Aligned */}
-        <div className="relative space-y-16 md:space-y-24 mt-16">
+        {/* Vertical Timeline Layout */}
+        <div className="relative space-y-24 mt-16">
           
-          {/* Animated Left Line */}
-          <div className="absolute left-[27px] top-0 bottom-0 w-px bg-white/10 hidden md:block">
+          {/* Animated Tactical Line */}
+          <div className="absolute left-[39px] top-0 bottom-0 w-px bg-white/5 hidden md:block">
             <motion.div 
-              className="w-full bg-gradient-to-b from-primary/0 via-primary to-primary/0" 
+              className="w-full bg-white shadow-[0_0_10px_#fff]" 
               style={{ height: lineHeight }}
             />
           </div>
 
-          {/* Mobile line */}
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-white/10 md:hidden">
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-white/5 md:hidden">
             <motion.div 
-              className="w-full bg-gradient-to-b from-primary/0 via-primary to-primary/0" 
+              className="w-full bg-white shadow-[0_0_10px_#fff]" 
               style={{ height: lineHeight }}
             />
           </div>
 
           {phases.map((phase, pi) => (
-            <motion.div key={pi} {...fadeUp} transition={{ delay: 0.2, duration: 0.6 }} className="relative z-10">
+            <motion.div key={pi} variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="relative z-10">
               
               {/* Phase Header Node & Title */}
-              <div className="flex items-start md:items-center mb-8 relative">
+              <div className="flex items-start md:items-center mb-10 relative">
                 
                 {/* Node (Desktop) */}
-                <div className="hidden md:flex absolute left-[27px] -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-black border border-primary/30 z-20 shadow-[0_0_20px_rgba(0,255,127,0.15)] backdrop-blur-md shrink-0">
-                  <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
+                <div className="hidden md:flex absolute left-[39px] -translate-x-1/2 items-center justify-center w-14 h-14 bg-black border-2 border-white/20 z-20 shrink-0">
+                  <div className="w-4 h-4 bg-white animate-pulse" />
                 </div>
                 
                 {/* Node (Mobile) */}
-                <div className="flex md:hidden absolute left-6 -translate-x-1/2 mt-1 items-center justify-center w-8 h-8 rounded-full bg-black border border-primary/30 z-20 shadow-[0_0_15px_rgba(0,255,127,0.1)] shrink-0">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <div className="flex md:hidden absolute left-6 -translate-x-1/2 mt-1 items-center justify-center w-8 h-8 bg-black border border-white/20 z-20 shrink-0">
+                  <div className="w-2 h-2 bg-white animate-pulse" />
                 </div>
 
-                <div className="pl-16 md:pl-24 w-full">
-                  <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-primary mb-2 md:mb-3">
-                    {phase.label}
-                  </span>
-                  <h3 className="text-xl md:text-3xl font-bold tracking-tight text-white">{phase.title}</h3>
+                <div className="pl-16 md:pl-32 w-full flex flex-col md:flex-row md:items-end justify-between border-b mx-4 md:mx-0 border-white/10 pb-4">
+                  <div>
+                    <span className="inline-block px-3 py-1 bg-white/5 border text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-3 border-white/20">
+                      {phase.label}
+                    </span>
+                    <h3 className="text-2xl md:text-4xl font-black uppercase text-white tracking-widest" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>{phase.title}</h3>
+                  </div>
+                  <div className="hidden md:block text-xs font-mono text-white/30 uppercase">System Status: Active</div>
                 </div>
               </div>
 
-              {/* Cards Grid */}
-              <div className="pl-16 md:pl-24 w-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {/* Tactical Cards Grid */}
+              <div className="pl-16 md:pl-32 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {phase.modules.map((mod, mi) => (
-                    <div
+                    <motion.div
                       key={mi}
-                      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10"
+                      variants={itemAnim}
+                      whileHover={{ y: -5 }}
+                      className="group relative flex flex-col justify-between overflow-hidden border border-white/10 bg-[#0A0A0A] p-6 transition-all duration-300 hover:border-white/40"
                     >
-                      {/* Hover Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 -z-10" />
+                      {/* Corner Accents */}
+                      <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-white/30" />
+                      <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-white/30" />
+                      <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-white/30" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-white/30" />
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 -z-10" />
                       
                       <div>
-                        <div className="p-3 inline-flex rounded-xl bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/30 transition-all duration-300 mb-6">
-                          <mod.icon className="h-6 w-6 text-white/80 group-hover:text-primary transition-colors duration-300" />
+                        <div className="p-3 inline-flex bg-black border border-white/10 group-hover:border-white transition-all duration-300 mb-6 relative">
+                          <mod.icon className="h-6 w-6 text-white/60 group-hover:text-white transition-colors duration-300" />
                         </div>
-                        <h4 className="text-lg font-bold text-white mb-2 group-hover:text-primary-50 transition-colors">{mod.name}</h4>
-                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed line-clamp-3 mb-6">{mod.desc}</p>
+                        <h4 className="text-xl font-bold text-white mb-2 uppercase tracking-wide font-[Chakra Petch]">{mod.name}</h4>
+                        <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed mb-8 font-medium">
+                          {mod.desc}
+                        </p>
                       </div>
 
                       <Link
                         to={`/capabilities/${mod.slug}`}
-                        className="mt-auto inline-flex items-center text-sm font-semibold text-primary/70 group-hover:text-primary transition-colors w-max"
+                        className="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors w-max"
                       >
-                        Explore capability <ArrowRight className="ml-1 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                        [ Engage Module ] <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                       </Link>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>

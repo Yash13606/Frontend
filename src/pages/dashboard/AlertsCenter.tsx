@@ -42,7 +42,7 @@ export default function AlertsCenter() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● ALERTS CENTER</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● ALERTS CENTER</p>
         <h1 className="text-[28px] font-bold text-white">Alerts Center</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>Manage and triage all security and operational alerts</p>
       </motion.div>
@@ -60,9 +60,9 @@ export default function AlertsCenter() {
               onClick={() => setSevFilter(s)}
               className="px-3 py-1 rounded-full text-[11px] font-medium transition-all"
               style={{
-                background: sevFilter === s ? 'rgba(0,255,136,0.15)' : 'transparent',
-                color: sevFilter === s ? '#00FF88' : '#555',
-                border: `1px solid ${sevFilter === s ? 'rgba(0,255,136,0.40)' : 'rgba(255,255,255,0.06)'}`,
+                background: sevFilter === s ? 'rgba(255,255,255,0.15)' : 'transparent',
+                color: sevFilter === s ? '#FFFFFF' : '#555',
+                border: `1px solid ${sevFilter === s ? 'rgba(255,255,255,0.40)' : 'rgba(255,255,255,0.06)'}`,
               }}
             >
               {s}
@@ -182,7 +182,7 @@ export default function AlertsCenter() {
                   </td>
                   <td className="px-3 py-3">
                     <div className="flex gap-2">
-                      <button className="text-[11px] font-semibold hover:opacity-80" style={{ color: '#00FF88' }}>Assign →</button>
+                      <button className="text-[11px] font-semibold hover:opacity-80" style={{ color: '#FFFFFF' }}>Assign →</button>
                       {!isResolved && (
                         <button
                           onClick={() => setResolvedIds(prev => new Set([...prev, alert.id]))}

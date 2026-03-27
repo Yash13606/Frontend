@@ -5,7 +5,7 @@ import { generatedReports, stores } from '@/data/mockData';
 const reportTypes = ['Footfall', 'Theft', 'Staff', 'Fire', 'Full'];
 
 const typeColors: Record<string, { color: string; bg: string }> = {
-  Footfall: { color: '#00FF88', bg: 'rgba(0,255,136,0.10)' },
+  Footfall: { color: '#FFFFFF', bg: 'rgba(255,255,255,0.10)' },
   Theft:    { color: '#EF4444', bg: 'rgba(239,68,68,0.10)' },
   Staff:    { color: '#6366F1', bg: 'rgba(99,102,241,0.10)' },
   Fire:     { color: '#F97316', bg: 'rgba(249,115,22,0.10)' },
@@ -37,7 +37,7 @@ export default function Reports() {
   return (
     <div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="mb-6">
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#00FF88' }}>● REPORTS</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: '#FFFFFF' }}>● REPORTS</p>
         <h1 className="text-[28px] font-bold text-white">Reports</h1>
         <p className="text-[14px] mt-1" style={{ color: '#888' }}>Generate and download intelligence reports for all modules</p>
       </motion.div>
@@ -50,7 +50,7 @@ export default function Reports() {
         className="rounded-xl p-6 mb-6"
         style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-5" style={{ color: '#00FF88' }}>GENERATE NEW REPORT</p>
+        <p className="text-[11px] font-medium tracking-[0.12em] uppercase mb-5" style={{ color: '#FFFFFF' }}>GENERATE NEW REPORT</p>
         <div className="grid grid-cols-4 gap-3 items-end">
           <div>
             <label className="block text-[11px] font-medium mb-2" style={{ color: '#555' }}>Date Range</label>
@@ -79,9 +79,9 @@ export default function Reports() {
             onClick={handleGenerate}
             className="rounded-lg py-2 px-4 text-[13px] font-semibold transition-all hover:opacity-90 active:scale-95"
             style={{
-              background: generated ? 'rgba(0,255,136,0.20)' : 'rgba(0,255,136,0.15)',
-              border: '1px solid rgba(0,255,136,0.40)',
-              color: '#00FF88',
+              background: generated ? 'rgba(255,255,255,0.20)' : 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.40)',
+              color: '#FFFFFF',
             }}
           >
             {generated ? '✓ Report Queued' : 'Generate Report →'}
@@ -98,7 +98,7 @@ export default function Reports() {
         style={{ background: '#111', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#00FF88' }}>GENERATED REPORTS</p>
+          <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: '#FFFFFF' }}>GENERATED REPORTS</p>
         </div>
         <table className="w-full">
           <thead>
@@ -127,7 +127,7 @@ export default function Reports() {
                   <td className="px-4 py-3">
                     <button
                       className="text-[12px] font-semibold hover:opacity-80 transition-opacity"
-                      style={{ color: '#00FF88' }}
+                      style={{ color: '#FFFFFF' }}
                     >
                       ↓ Download
                     </button>

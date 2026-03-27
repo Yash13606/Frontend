@@ -31,7 +31,7 @@ export const StoreSelector = () => {
           color: '#FFFFFF',
         }}
       >
-        <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: '#00FF88' }} />
+        <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: '#FFFFFF' }} />
         {currentStore.name}
         <ChevronDown size={12} style={{ color: '#444' }} />
       </button>
@@ -46,7 +46,7 @@ export const StoreSelector = () => {
               key={store.id}
               onClick={() => { setSelectedStore(store.id); setOpen(false); }}
               className="w-full text-left px-4 py-2.5 text-[13px] transition-colors hover:bg-white/5"
-              style={{ color: selectedStore === store.id ? '#00FF88' : '#888888' }}
+              style={{ color: selectedStore === store.id ? '#FFFFFF' : '#888888' }}
             >
               {store.name}
             </button>

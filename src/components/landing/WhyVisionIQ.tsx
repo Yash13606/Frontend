@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Cpu,
   Video,
@@ -48,72 +48,122 @@ const infrastructureFeatures = [
   },
 ];
 
-function AnimatedContainer({
-  delay = 0.1,
-  className,
-  children,
-}: {
-  delay?: number;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.6 }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const itemAnim: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 300, damping: 24 } },
+};
 
 const WhyVisionIQ = () => (
-  <section className="py-20 md:py-32 bg-transparent relative overflow-hidden">
-    {/* Subtle glow */}
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+  <section className="py-24 md:py-32 bg-[#050505] relative overflow-hidden border-b border-white/10">
+    {/* Tactical Grid Background */}
+    <div 
+      className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]"
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 1) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+      }}
+    />
 
-    <div className="mx-auto max-w-7xl px-4 md:px-6">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 md:mb-20 gap-6">
-        <div className="max-w-2xl">
+    <div className="mx-auto max-w-7xl px-4 md:px-8 relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-24 gap-6">
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }} 
+          whileInView={{ opacity: 1, x: 0 }} 
+          viewport={{ once: true }} 
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl"
+        >
           <SectionBadge text="ENTERPRISE INFRASTRUCTURE" />
-          <h2 className="mt-4 text-3xl font-bold text-foreground md:text-5xl lg:text-6xl tracking-tight">
-            Built for <span className="text-primary">Real-World</span> Deployment.
+          <h2 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter" style={{ fontFamily: "'Chakra Petch', sans-serif" }}>
+            Built for <br />
+            Deep Integration.
           </h2>
-        </div>
-        <p className="text-muted-foreground md:max-w-xs text-sm md:text-base leading-relaxed">
-          Proprietary hardware-agnostic architecture designed for the toughest retail environments on the planet.
-        </p>
+        </motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }} 
+          whileInView={{ opacity: 1, x: 0 }} 
+          viewport={{ once: true }} 
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="md:max-w-xs border-l border-white/20 pl-4"
+        >
+          <p className="text-gray-400 text-sm md:text-base font-mono leading-relaxed uppercase tracking-widest">
+            Proprietary hardware-agnostic architecture designed for the toughest, high-density retail environments on the planet.
+          </p>
+        </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
+      <motion.div 
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {infrastructureFeatures.map((feature, i) => (
           <motion.div 
             key={i}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 * i, duration: 0.5 }}
-            className="group relative bg-black/40 p-8 md:p-10 backdrop-blur-sm hover:bg-black/60 transition-all duration-300"
+            variants={itemAnim}
+            className="group relative bg-[#0A0A0A] border border-white/10 p-8 transition-all duration-300 hover:border-white/40 hover:bg-[#0c0c0c]"
           >
-            <div className="relative z-10">
-              <div className="mb-6 p-3 inline-flex rounded-xl bg-primary/10 border border-primary/20 group-hover:scale-110 transition-transform duration-300">
-                <feature.icon className="h-6 w-6 text-primary" />
+            {/* Corner Tactical Markers */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30" />
+            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30" />
+            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30" />
+
+            {/* Inner Content */}
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex justify-between items-start mb-8">
+                <div className="p-3 bg-white text-black border border-white">
+                  <feature.icon className="h-6 w-6" />
+                </div>
+                <div className="text-[10px] font-mono font-bold text-gray-600 tracking-widest uppercase">
+                  NODE_{i + 1}
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-3 tracking-tight">
+              
+              <h3 className="text-xl font-black text-white mb-3 tracking-widest uppercase font-[Chakra Petch]">
                 {feature.title}
               </h3>
-              <p className="text-sm md:text-base text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+              
+              <p className="text-sm font-medium text-gray-500 leading-relaxed group-hover:text-gray-300 transition-colors mt-auto">
                 {feature.description}
               </p>
             </div>
-            {/* Hover subtle pulse line at bottom */}
-            <div className="absolute bottom-0 left-0 h-1 w-0 bg-primary group-hover:w-full transition-all duration-500" />
+
+            {/* Hover overlay scanline */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.05)_50%,transparent_100%)] bg-[length:100%_4px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mix-blend-overlay" />
           </motion.div>
         ))}
-      </div>
+      </motion.div>
+
+      {/* Footer Line */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.8 }}
+        className="mt-16 pt-8 border-t border-white/10 flex items-center justify-between"
+      >
+        <div className="flex items-center gap-2 text-white/30">
+          <span className="text-[10px] font-mono tracking-[0.2em] uppercase">System Architecture Verified</span>
+        </div>
+        <div className="text-[10px] font-mono tracking-[0.2em] uppercase text-white/30">
+          STATUS: OPERATIONAL
+        </div>
+      </motion.div>
     </div>
   </section>
 );

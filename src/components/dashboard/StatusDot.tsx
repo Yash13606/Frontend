@@ -10,14 +10,14 @@ export const StatusDot = ({ status, size = 8 }: StatusDotProps) => {
         <span
           className="absolute inline-flex h-full w-full rounded-full"
           style={{
-            background: '#00FF88',
+            background: '#FFFFFF',
             animation: 'pulse-ring 2s ease-out infinite',
             opacity: 0.6,
           }}
         />
         <span
           className="relative inline-flex rounded-full"
-          style={{ width: size, height: size, background: '#00FF88' }}
+          style={{ width: size, height: size, background: '#FFFFFF' }}
         />
       </span>
     );

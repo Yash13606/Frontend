@@ -47,28 +47,17 @@ function SidebarIcon({ item, criticalCount }: { item: typeof navItems[0]; critic
         <NavLink
           to={item.to}
           end={isExact}
-          className="relative flex items-center justify-center transition-all duration-120"
+          className="relative flex items-center justify-center transition-colors hover:bg-white/5"
           style={{
             width: 34,
             height: 34,
             borderRadius: 8,
-            background: isActive ? 'rgba(0,255,136,0.15)' : 'transparent',
-            borderLeft: isActive ? '2px solid #00FF88' : '2px solid transparent',
-          }}
-          onMouseEnter={e => {
-            if (!isActive) {
-              (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(0,255,136,0.10)';
-            }
-          }}
-          onMouseLeave={e => {
-            if (!isActive) {
-              (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
-            }
+            background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
           }}
         >
           <Icon
             size={16}
-            style={{ color: isActive ? '#00FF88' : '#444', transition: 'all 120ms ease' }}
+            style={{ color: isActive ? '#FFFFFF' : '#888888', transition: 'color 120ms ease' }}
           />
           {item.label === 'Alerts Center' && criticalCount !== undefined && criticalCount > 0 && (
             <span
@@ -124,8 +113,8 @@ export const DashboardShell = ({ children }: DashboardShellProps) => {
             width: 32,
             height: 32,
             borderRadius: 8,
-            background: '#00FF88',
-            color: '#000',
+            background: '#FFFFFF',
+            color: '#000000',
             fontSize: 15,
             userSelect: 'none',
           }}
@@ -147,7 +136,7 @@ export const DashboardShell = ({ children }: DashboardShellProps) => {
               to="/dashboard/settings"
               className="flex items-center justify-center transition-all duration-120"
               style={{ width: 34, height: 34, borderRadius: 8 }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(0,255,136,0.10)'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.10)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
             >
               <Settings size={16} style={{ color: '#444' }} />
@@ -203,12 +192,13 @@ export const DashboardShell = ({ children }: DashboardShellProps) => {
 
             {/* Avatar */}
             <div
-              className="flex items-center justify-center rounded-full text-[11px] font-semibold cursor-pointer"
+              className="flex items-center justify-center rounded-full text-[11px] font-medium cursor-pointer transition-colors"
               style={{
                 width: 28,
                 height: 28,
-                background: 'rgba(0,255,136,0.15)',
-                color: '#00FF88',
+                background: 'rgba(255,255,255,0.1)',
+                color: '#FFFFFF',
+                border: '1px solid rgba(255,255,255,0.1)',
               }}
             >
               YM

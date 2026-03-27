@@ -60,7 +60,7 @@ export const AlertRow = ({ alert, storeName }: AlertRowProps) => {
         <div className="flex items-center gap-2">
           <button
             className="text-[11px] font-semibold transition-colors hover:opacity-80"
-            style={{ color: '#00FF88' }}
+            style={{ color: '#FFFFFF' }}
           >
             Assign
           </button>
