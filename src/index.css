@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 153 100% 50%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 6.7%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 6.7%;
+    --muted-foreground: 0 0% 53%;
+
+    --accent: 153 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 33 100% 50%;
+    --warning-foreground: 0 0% 0%;
+
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 153 100% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 153 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: 153 100% 50%;
+
+    --surface-dark: 0 0% 4%;
+    --surface-card: 0 0% 6.7%;
+    --neon-green: 153 100% 50%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 153 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 6.7%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 6.7%;
+    --muted-foreground: 0 0% 53%;
+    --accent: 153 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 153 100% 50%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 153 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: 153 100% 50%;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .dot-matrix-bg {
+    background-image: radial-gradient(circle, hsl(153 100% 50% / 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* ── Dark animated grid background (used on all non-hero sections) ── */
+  .grid-bg {
+    position: relative;
+    isolation: isolate;
+    background-color: hsl(0 0% 2%);
+    background-image:
+      linear-gradient(hsl(0 0% 100% / 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.12) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Floating glow cells that drift across the grid */
+  .grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 250px 250px at 15% 20%, hsl(153 100% 50% / 0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 280px 200px at 80% 60%, hsl(220 100% 70% / 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 200px 200px at 50% 85%, hsl(153 100% 50% / 0.07) 0%, transparent 70%);
+    animation: grid-glow 12s ease-in-out infinite alternate;
+  }
+
+  .grid-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes grid-glow {
+    0%   { opacity: 0.6; background-position: 0% 0%, 0% 0%; }
+    33%  { opacity: 1;   background-position: 5% 10%, 10% 5%; }
+    66%  { opacity: 0.7; background-position: -5% 5%, 5% -10%; }
+    100% { opacity: 0.9; background-position: 10% -5%, -5% 10%; }
+  }
+
+  .text-gradient-green {
+    background: linear-gradient(135deg, hsl(153 100% 50%), hsl(153 80% 70%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Dashboard animation keyframes */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 50px rgba(0,255,136,0.4); filter: hue-rotate(0deg); }
+  50% { transform: translateY(-12px) scale(1.03); box-shadow: 0 0 80px rgba(0,255,136,0.7); filter: hue-rotate(15deg); }
+}
+
+
