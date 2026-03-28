@@ -12,9 +12,11 @@ import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
 import { BGPattern } from "@/components/ui/bg-pattern";
 
+import WhisperText from "@/components/ui/whisper-text";
+
 const Index = () => {
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background whitespace-pre-wrap">
       {/* Full-page grid background behind everything */}
       <BGPattern
         variant="grid"
@@ -24,6 +26,21 @@ const Index = () => {
       />
       <Navbar />
       <HeroSection />
+      
+      <div className="flex flex-col justify-center items-center py-20 px-4 w-full select-none bg-black border-b border-white/10 z-10 relative">
+        <WhisperText
+          text="Security without compromise."
+          className="font-black text-[#00F0FF] text-3xl sm:text-5xl md:text-6xl tracking-tighter uppercase"
+          delay={100}
+          duration={0.5}
+          x={-20}
+          y={0}
+        />
+        <p className="text-gray-400 mt-6 max-w-2xl text-center font-mono text-sm uppercase tracking-widest">
+          Industry leading inference speeds powered by distributed AI nodes.
+        </p>
+      </div>
+
       <ModulePhases />
       <RecognitionGrid />
       <DeploymentJourney />
