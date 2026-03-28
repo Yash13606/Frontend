@@ -8,6 +8,14 @@ import { Users, Clock, Zap, TrendingUp, BarChart3, ChevronRight } from "lucide-r
 import {
   footfallHourly, footfallWeekly, heatmapZones, demographics, dwellByZone
 } from "@/data/watchrMockData";
+import {
+  AnimatedCard,
+  CardBody,
+  CardDescription,
+  CardTitle,
+  CardVisual,
+  Visual1
+} from "@/components/ui/animated-card";
 
 const containerVar = {
   hidden: { opacity: 0 },
@@ -219,6 +227,30 @@ export default function CustomerAnalytics() {
           </div>
         </motion.div>
       </div>
+
+      {/* ─── Section 4: Live Telemetry Card (Animated) ─── */}
+      <motion.div variants={itemVar} className="flex gap-5 border-t border-[#2d3440] pt-6 pb-2 mt-2">
+        <div className="flex flex-col gap-2 max-w-sm">
+          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest flex items-center gap-2">
+            <Zap className="w-4 h-4 text-[#00F0FF]" /> AI Telemetry Stream
+          </h3>
+          <p className="text-[11px] font-mono text-[#8c9baf]">
+            Live visualizations piped directly from the YOLOv8n hardware cluster, showing background data ingestion loops and model inferences on raw camera streams.
+          </p>
+        </div>
+        
+        <AnimatedCard className="bg-[#0a0c10] border-[#2d3440] shadow-xl shadow-black">
+          <CardVisual>
+            <Visual1 mainColor="#00F0FF" secondaryColor="#a855f7" gridColor="rgba(255,255,255,0.03)" />
+          </CardVisual>
+          <CardBody className="border-[#2d3440] bg-[#11141a]">
+            <CardTitle className="text-white text-sm font-mono uppercase tracking-wider">Vision Model Active</CardTitle>
+            <CardDescription className="text-[#8c9baf] text-[11px] font-mono">
+              Processing 24 nodes simultaneously at 30 inferences/sec.
+            </CardDescription>
+          </CardBody>
+        </AnimatedCard>
+      </motion.div>
 
     </motion.div>
   );
