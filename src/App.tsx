@@ -16,17 +16,15 @@ import Company from "./pages/Company";
 import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 
-// Dashboard
-import { DashboardShell } from "./components/dashboard/DashboardShell";
-import Overview from "./pages/dashboard/Overview";
-import CustomerAnalytics from "./pages/dashboard/CustomerAnalytics";
-import LossPrevention from "./pages/dashboard/LossPrevention";
-import StaffMonitor from "./pages/dashboard/StaffMonitor";
-import FireSafety from "./pages/dashboard/FireSafety";
-import PeopleReID from "./pages/dashboard/PeopleReID";
-import AlertsCenter from "./pages/dashboard/AlertsCenter";
-import Reports from "./pages/dashboard/Reports";
-import Settings from "./pages/dashboard/Settings";
+// Watchr Dashboard
+import { WatchrShell } from "./components/watchr/WatchrShell";
+import LiveCanvas from "./pages/watchr/LiveCanvas";
+import ThreatMonitor from "./pages/watchr/ThreatMonitor";
+import SafetySentinel from "./pages/watchr/SafetySentinel";
+import EmployeeKiosk from "./pages/watchr/EmployeeKiosk";
+import CustomerAnalytics from "./pages/watchr/CustomerAnalytics";
+import AlertsCenter from "./pages/watchr/AlertsCenter";
+import Settings from "./pages/watchr/Settings";
 
 const queryClient = new QueryClient();
 
@@ -60,16 +58,14 @@ const App = () => (
           <Route path="/company" element={<Company />} />
           <Route path="/careers" element={<Careers />} />
 
-          {/* Dashboard routes — all wrapped in DashboardShell */}
-          <Route path="/dashboard" element={<DashboardShell><Overview /></DashboardShell>} />
-          <Route path="/dashboard/customer-analytics" element={<DashboardShell><CustomerAnalytics /></DashboardShell>} />
-          <Route path="/dashboard/loss-prevention" element={<DashboardShell><LossPrevention /></DashboardShell>} />
-          <Route path="/dashboard/staff-monitor" element={<DashboardShell><StaffMonitor /></DashboardShell>} />
-          <Route path="/dashboard/fire-safety" element={<DashboardShell><FireSafety /></DashboardShell>} />
-          <Route path="/dashboard/people-reid" element={<DashboardShell><PeopleReID /></DashboardShell>} />
-          <Route path="/dashboard/alerts" element={<DashboardShell><AlertsCenter /></DashboardShell>} />
-          <Route path="/dashboard/reports" element={<DashboardShell><Reports /></DashboardShell>} />
-          <Route path="/dashboard/settings" element={<DashboardShell><Settings /></DashboardShell>} />
+          {/* Watchr Dashboard routes — wrapped in WatchrShell */}
+          <Route path="/dashboard" element={<WatchrShell><LiveCanvas /></WatchrShell>} />
+          <Route path="/dashboard/threat-monitor" element={<WatchrShell><ThreatMonitor /></WatchrShell>} />
+          <Route path="/dashboard/safety" element={<WatchrShell><SafetySentinel /></WatchrShell>} />
+          <Route path="/dashboard/kiosk" element={<WatchrShell><EmployeeKiosk /></WatchrShell>} />
+          <Route path="/dashboard/customer-analytics" element={<WatchrShell><CustomerAnalytics /></WatchrShell>} />
+          <Route path="/dashboard/alerts" element={<WatchrShell><AlertsCenter /></WatchrShell>} />
+          <Route path="/dashboard/settings" element={<WatchrShell><Settings /></WatchrShell>} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
